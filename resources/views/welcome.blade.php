@@ -22,17 +22,23 @@
     <body>
 
     <div class="w-full space-y-0 m-0">
-        <div class=" text-white h-screen text-left pl-40" style="background-color: #3270e8;">
-            <img
-                src="/logo.png"
-                class="w-76 pt-20"
-            />
+        <div class=" text-white h-screen text-left pl-40 pr-40 bg-[#339dc8]">
+            <div class="flex items-center justify-between pt-10">
+                <div>
+                    <img
+                        src="/logo.png"
+                        class="w-76 "
+                    />
+                </div>
+                <div>
+                    <a class="m-2  hover:text-white hover:underline decoration-red-400 underline-offset-10" href="{{ route('login') }}">Войти</a>
+                    <a class="m-2  hover:text-white hover:underline decoration-red-400 underline-offset-10" href="{{ route('login') }}">Зарегистрироваться</a>
+                </div>
+            </div>
             <h2 class="text-6xl font-bold p-4 mt-20">Обогащайте свою речь<br/>через практику</h2>
             <p class="p-4">Внедряйте новые слова в свою речь практикуясь</p>
-            <button type="button" class="p-5 pl-10 pr-10 focus:outline-none text-white bg-red-700
-                hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
-                 rounded-4xl mt-10 text-2xl cursor-pointer dark:bg-red-400 dark:hover:bg-red-500
-                 dark:focus:ring-red-900"
+            <button type="button" class="p-5 pl-10 pr-10 focus:outline-none text-white bg-red-400 font-medium
+                 rounded-4xl mt-10 text-2xl cursor-pointer"
             >
                 Попробовать бесплатно
             </button>
@@ -41,36 +47,13 @@
 
         <div class="bg-gray-200 h-screen text-black flex justify-center items-center ">
 
-            <div class="mr-20 bg-white shadow-lg border border-gray-100 p-5 rounded-2xl w-70">
-                <p class="text-xl mb-10 font-bold">Карпинские слова</p>
-                <img src="https://avatars.mds.yandex.net/i?id=4d91ce110e72f477fbd953c4053b7cecb73497d6-10113980-images-thumbs&n=13">
-                <p class="mt-10">Самые часто употребительные слова в городе Карпинск</p>
-                <button class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-10 cursor-pointer mb-5">Попробовать</button>
+            <div class="grid grid-cols-4 gap-5">
+                @include('word-lists')
             </div>
-
-            <div class="mr-20 bg-white shadow-lg border border-gray-100 p-5 rounded-2xl w-70">
-                <p class="text-xl mb-10 font-bold">Женские слова</p>
-                <img
-                    class="h-40"
-                    src="https://avatars.mds.yandex.net/i?id=49788150a1f967689e5f8d4081084d1afc526e9a-5878150-images-thumbs&n=13">
-                <p class="mt-10">Самые часто употребительные слова в городе Карпинск</p>
-                <button class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-10 cursor-pointer mb-5">Попробовать</button>
-            </div>
-
-            <div class="mr-20 bg-white shadow-lg border border-gray-100 p-5 rounded-2xl w-70">
-                <p class="text-xl mb-10 font-bold">Зумерские слова</p>
-                <img
-                    src="https://avatars.mds.yandex.net/i?id=ae5e08eb464eacbaa721e700ccb6c01f4be9577b-10533404-images-thumbs&n=13"
-                    class="h-40 text-center"
-                >
-                <p class="mt-10">Самые часто употребительные слова в городе Карпинск</p>
-                <button class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-10 cursor-pointer mb-5">Попробовать</button>
-            </div>
-
 
         </div>
 
-        <div class=" text-white flex justify-center h-34 items-center"  style="background-color: #3270e8">
+        <div class=" text-white flex justify-center h-34 items-center bg-[#339dc8]" >
 
             <p class="p-4">Группа ВК</p>
             <p class="p-4">Канал</p>
