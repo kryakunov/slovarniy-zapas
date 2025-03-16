@@ -13,4 +13,11 @@ class WordListController extends Controller
 
         return view('home.word-list', compact('wordLists'));
     }
+
+    public function openWordList(WordList $wordList)
+    {
+        $words = $wordList->words;
+
+        return view('home.open-word-list', compact('words', 'wordList'));
+    }
 }

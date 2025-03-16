@@ -28,7 +28,10 @@
 
             </div>
             <div class="hidden md:flex md:items-center md:space-x-4">
-                <a class="m-2 hover:underline decoration-red-400 underline-offset-10" href="{{ route('logout') }}">Выйти</a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <input type="submit" class="m-2 cursor-pointer hover:underline decoration-red-400 underline-offset-10  hover:underline decoration-red-400 underline-offset-10" value="Выйти">
+                </form>
             </div>
         </div>
     </nav>

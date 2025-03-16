@@ -32,27 +32,80 @@
                 </div>
                 <div>
                     <a class="m-2  hover:text-white hover:underline decoration-red-400 underline-offset-10" href="{{ route('login') }}">Войти</a>
-                    <a class="m-2  hover:text-white hover:underline decoration-red-400 underline-offset-10" href="{{ route('login') }}">Зарегистрироваться</a>
+                    <a class="m-2  hover:text-white hover:underline decoration-red-400 underline-offset-10" href="{{ route('register') }}">Зарегистрироваться</a>
                 </div>
             </div>
-            <h2 class="text-6xl font-bold p-4 mt-20">Обогащайте свою речь<br/>через практику</h2>
-            <p class="p-4">Внедряйте новые слова в свою речь практикуясь</p>
-            <button type="button" class="p-5 pl-10 pr-10 focus:outline-none text-white bg-red-400 font-medium
-                 rounded-4xl mt-10 text-2xl cursor-pointer"
-            >
-                Попробовать бесплатно
-            </button>
+            <div class="flex">
+                <div>
+                <h2 class="text-6xl font-bold p-4 mt-20">Изучайте новые слова<br/>через практику</h2>
+                <p class="p-4">Внедряйте новые слова в свою речь практикуясь</p>
+                <button type="button" class="p-5 pl-10 pr-10 focus:outline-none text-white bg-red-400 font-medium
+                     rounded-4xl mt-10 text-2xl cursor-pointer"
+                >
+                    <a href="{{ route('login') }}">Попробовать бесплатно</a>
+                </button>
+                </div>
+                <div>
+                    <div class="relative w-100 mt-70">
+                        <div class="overflow-hidden rounded-lg">
+                            <div id="slider" class="flex transition-transform duration-500 text-center items-center">
+                                @foreach($words as $word)
+                                <div class="min-w-full pl-15 pr-15">
+                                    <p class="text-3xl mb-1">{{ $word['word'] }}</p>
+                                    <p class="text-sm text-gray-200">{{ $word['description'] }}</p>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <button id="prev" class="text-4xl absolute top-1/2 left-0 transform -translate-y-1/2 cursor-pointer p-2 rounded-full ">❮</button>
+                        <button id="next" class="text-4xl absolute top-1/2 right-0 transform -translate-y-1/2 cursor-pointer p-2 rounded-full ">❯</button>
+                    </div>
 
+                </div>
+            </div>
         </div>
 
-        <div class="bg-gray-200 h-screen text-black flex justify-center items-center ">
+        <script>
+            const slider = document.getElementById('slider');
+            const slides = slider.children;
+            let currentIndex = 0;
 
+            document.getElementById('next').addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % slides.length;
+                updateSlider();
+            });
+
+            document.getElementById('prev').addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                updateSlider();
+            });
+
+            function updateSlider() {
+                const offset = -currentIndex * 100;
+                slider.style.transform = `translateX(${offset}%)`;
+            }
+            // Автоматическая прокрутка слайдов каждые 1 секунду
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % slides.length;
+                updateSlider();
+            }, 3000);
+        </script>
+
+        <div class="bg-gray-200 min-h-screen p-10 text-black flex justify-center items-center ">
+<div><p class="text-4xl text-center mb-10 text-[#339dc8]">Словри на любой вкус</p>
             <div class="grid grid-cols-4 gap-5">
                 @include('word-lists')
             </div>
 
+    <div class="text-center">
+        <button type="button" class="p-5 pl-10 pr-10 focus:outline-none text-white bg-red-400 font-medium
+                         rounded-4xl mt-10 text-2xl cursor-pointer"
+        >
+            <a href="{{ route('login') }}">Смотреть все словами</a>
+        </button>
+    </div>
         </div>
-
+        </div>
         <div class=" text-white flex justify-center h-34 items-center bg-[#339dc8]" >
 
             <p class="p-4">Группа ВК</p>
