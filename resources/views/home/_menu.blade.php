@@ -1,18 +1,38 @@
 
-<aside class="w-64 shadow h-screen p-4">
-    <h2 class="text-lg font-semibold mb-4">Меню</h2>
+<aside class="w-64 p-4 sticky top-20 h-200 mt-0 font-medium ">
     <ul>
-        <li class="mb-2">
-            <a href="{{ route('home') }}" class="block p-2 text-gray-700 hover:bg-gray-200 rounded">Главная</a>
+        <li class="flex items-center">
+            <a href="{{ route('home') }}" class="flex items-center p-4 text-gray-700 hover:bg-gray-200 hover:text-sky-700 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                    <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+                </svg>
+                <div class="ml-3">Мой словарь</div> <!-- Добавляем небольшой отступ между иконкой и текстом -->
+            </a>
         </li>
-        <li class="mb-2">
-            <a href="{{ route('my-words') }}" class="block p-2 text-gray-700 hover:bg-gray-200 rounded">Слова для изучения</a>
+        <li class="flex items-center">
+            <a href="{{ route('training') }}" class="flex items-center p-4 text-gray-700 hover:bg-gray-200 hover:text-sky-700 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart" viewBox="0 0 16 16">
+                    <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.6 7.6 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
+                </svg>
+                <div class="ml-3">Тренировки</div> <!-- Добавляем небольшой отступ между иконкой и текстом -->
+            </a>
         </li>
-        <li class="mb-2">
-            <a href="{{ route('wordlist') }}" class="block p-2 text-gray-700 hover:bg-gray-200 rounded">Все слова</a>
+        <li class="flex items-center">
+            <a href="{{ route('lists') }}" class="flex items-center p-4 text-gray-700 hover:bg-gray-200 hover:text-sky-700 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-list-check" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0m0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0m0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0"/>
+                </svg>
+                <div class="ml-3">Наборы слов</div> <!-- Добавляем небольшой отступ между иконкой и текстом -->
+            </a>
         </li>
-        <li class="mb-2">
-            <a href="#" class="block p-2 text-gray-700 hover:bg-gray-200 rounded">Выход</a>
+        <li class="flex items-center">
+            <a href="{{ route('wordlist') }}" class="flex items-center p-4 text-gray-700 hover:bg-gray-200 hover:text-sky-700 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-bookmarks" viewBox="0 0 16 16">
+                    <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1z"/>
+                    <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1"/>
+                </svg>
+                <div class="ml-3">Все слова</div> <!-- Добавляем небольшой отступ между иконкой и текстом -->
+            </a>
         </li>
     </ul>
 </aside>

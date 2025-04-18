@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         @vite('resources/css/app.css')
         <title>Laravel</title>
-
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
@@ -44,69 +44,111 @@
                 >
                     <a href="{{ route('login') }}">Попробовать бесплатно</a>
                 </button>
-                </div>
-                <div>
-                    <div class="relative w-100 mt-70">
-                        <div class="overflow-hidden rounded-lg">
-                            <div id="slider" class="flex transition-transform duration-500 text-center items-center">
-                                @foreach($words as $word)
-                                <div class="min-w-full pl-15 pr-15">
-                                    <p class="text-3xl mb-1">{{ $word['word'] }}</p>
-                                    <p class="text-sm text-gray-200">{{ $word['description'] }}</p>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        <button id="prev" class="text-4xl absolute top-1/2 left-0 transform -translate-y-1/2 cursor-pointer p-2 rounded-full ">❮</button>
-                        <button id="next" class="text-4xl absolute top-1/2 right-0 transform -translate-y-1/2 cursor-pointer p-2 rounded-full ">❯</button>
-                    </div>
 
                 </div>
+
             </div>
         </div>
 
-        <script>
-            const slider = document.getElementById('slider');
-            const slides = slider.children;
-            let currentIndex = 0;
 
-            document.getElementById('next').addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % slides.length;
-                updateSlider();
-            });
+<div class="bg-gray-800 flex items-center justify-center ">
 
-            document.getElementById('prev').addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-                updateSlider();
-            });
-
-            function updateSlider() {
-                const offset = -currentIndex * 100;
-                slider.style.transform = `translateX(${offset}%)`;
-            }
-            // Автоматическая прокрутка слайдов каждые 1 секунду
-            setInterval(() => {
-                currentIndex = (currentIndex + 1) % slides.length;
-                updateSlider();
-            }, 3000);
-        </script>
-
-        <div class="bg-gray-200 min-h-screen p-10 text-black flex justify-center items-center ">
-<div><p class="text-4xl text-center mb-10 text-[#339dc8]">Словри на любой вкус</p>
-            <div class="grid grid-cols-4 gap-5">
-                @include('word-lists')
+        <div class="relative w-100 mt-10 mb-10">
+            <div class="overflow-hidden rounded-lg">
+                <div id="slider" class="flex transition-transform duration-500 text-center items-center">
+                    @foreach($words as $word)
+                        <div class="min-w-full pl-15 pr-15">
+                            <p class="text-3xl mb-1 text-gray-200">{{ $word['word'] }}</p>
+                            <p class="text-sm text-gray-200">{{ $word['description'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
             </div>
+            <button id="prev" class="text-4xl text-white absolute top-1/2 left-0 transform -translate-y-1/2 cursor-pointer p-2 rounded-full ">❮</button>
+            <button id="next" class="text-4xl text-white absolute top-1/2 right-0 transform -translate-y-1/2 cursor-pointer p-2 rounded-full ">❯</button>
+
+    </div>
+    <script>
+        const slider = document.getElementById('slider');
+        const slides = slider.children;
+        let currentIndex = 0;
+
+        document.getElementById('next').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlider();
+        });
+
+        document.getElementById('prev').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlider();
+        });
+
+        function updateSlider() {
+            const offset = -currentIndex * 100;
+            slider.style.transform = `translateX(${offset}%)`;
+        }
+        // Автоматическая прокрутка слайдов каждые 1 секунду
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlider();
+        }, 3000);
+
+
+        function getData(id)
+        {
+            $.ajax({
+                url: '/get-word-lists/' + id,
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    let html = '';
+                    data.forEach(function(item) {
+                        // Предположим, что у каждого объекта есть поле 'name'
+                        html += '<p>' + item.title + '</p>';
+                    });
+                    $('#dataContainer').html(html); // Обновляем содержимое контейнера
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Ошибка при получении данных:', error);
+                }
+            });
+        }
+    </script>
+</div>
+        <div class="bg-gray-200  p-10 text-black flex justify-center items-center ">
+        <div><p class="text-4xl text-center mb-10 text-[#339dc8]">Словари на любой вкус</p>
+
+    <div class="flex items-center justify-center mb-10 ">
+    <div class="w-[70%] p-6 ">
+        <div class="flex flex-wrap gap-2">
+            @forelse($categories as $category)
+                <a onclick="getData({{$category['id']}})">
+            <span class="bg-white  px-4 py-1 rounded-full text-sm cursor-pointer hover:bg-gray-100">{{ $category['title'] }}</span>
+                </a>
+            @empty
+            @endforelse
+        </div>
+    </div>
+    </div>
+    <div class="grid grid-cols-4 gap-5" id="dataContainer">
+        @include('word-lists')
+    </div>
 
     <div class="text-center">
         <button type="button" class="p-5 pl-10 pr-10 focus:outline-none text-white bg-red-400 font-medium
                          rounded-4xl mt-10 text-2xl cursor-pointer"
         >
-            <a href="{{ route('login') }}">Смотреть все словами</a>
+            <a href="{{ route('login') }}">Смотреть все слова</a>
         </button>
     </div>
+
+
+
+
         </div>
         </div>
-        <div class=" text-white flex justify-center h-34 items-center bg-[#339dc8]" >
+        <div class=" text-white flex justify-center h-34 items-center bg-gray-800" >
 
             <p class="p-4">Группа ВК</p>
             <p class="p-4">Канал</p>

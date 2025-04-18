@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    @vite('resources/js/app.js')
+    <title>Словарный запас</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -16,16 +17,23 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/app.css'])
 </head>
 <body class="bg-gray-50">
-    <nav class="bg-white shadow">
-        <div class="container mx-auto py-2 flex justify-between items-center">
+    <nav class="sticky top-0 bg-white shadow-md p-0 z-10">
+        <div class="container mx-auto py-3 flex justify-between items-center">
             <div class="flex">
                 <a href="/">
                 <img
                     src="/logo-min.png"
                     class="w-6"
-                />                </a><a href="/">
-                    <p class="ml-2 font-bold">Словарный запас</p></a>
-
+                />
+                </a>
+                <a href="/">
+                    <p class="ml-2 font-bold">Словарный запас</p>
+                </a>
+                <div class="ml-20">
+                    <a href="" class="ml-10 font-bold hover:text-sky-800">Словари</a>
+                    <a href="" class="ml-10 font-bold">Словари</a>
+                    <a href="" class="ml-10">Словари</a>
+                </div>
             </div>
             <div class="hidden md:flex md:items-center md:space-x-4">
                 <form action="{{ route('logout') }}" method="POST">
@@ -35,11 +43,11 @@
             </div>
         </div>
     </nav>
-    <div id="app" class="flex">
-
+    <div class="flex">
         @include('home._menu')
 
-        <main class=" flex-1 ">
+        <!-- Main Content -->
+        <main class="flex-1 p-6 mr-30">
             @yield('content')
         </main>
     </div>
