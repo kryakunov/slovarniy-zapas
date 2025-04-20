@@ -22,6 +22,11 @@ class TrainingController extends Controller
         return view('training.sentence');
     }
 
+    public function descriptionWord()
+    {
+        return view('training.description-word');
+    }
+
     public function remember()
     {
         return view('training.remember');
@@ -92,7 +97,56 @@ class TrainingController extends Controller
         ]);
     }
 
+    public function doneRepeatDescriptionWord($id)
+    {
+        $word = MyWord::where('user_id', auth()->id())
+            ->where('word_id', $id)
+            ->first();
 
+        $lastRepeat = time() - $word->repeated;
+
+        // если прошло более суток (22 часа) с момента последнего повтора
+        if ($lastRepeat > 72000) {
+
+            $word->count_repeated++;
+
+            switch ($word->count_repeated) {
+                case null:
+                case 1:
+                case 2:
+                    $word->status = self::REPEAT;
+                    break;
+                case 3:
+                    $word->status = self::DONE;
+                    break;
+            }
+        }
+
+        $word->repeated = time();
+        $word->update();
+
+        // TODO рассчитать исходя из даты последнего повтора, прибавлять ли count repeated
+
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
+
+    public function dontKnowRepeatDescriptionWord($id)
+    {
+        $word = MyWord::where('user_id', auth()->id())
+            ->where('word_id', $id)
+            ->first();
+
+        $word->repeated = time();
+        $word->update();
+
+        // TODO рассчитать исходя из даты последнего повтора, прибавлять ли count repeated
+
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
 
     public function getSentence()
     {
@@ -101,8 +155,16 @@ class TrainingController extends Controller
             ->where('repeated', '<', time() - 72000)
             ->orWhere('repeated', '=', null)
             ->with('word')
-            ->first()
-            ->toArray();
+            ->first();
+
+        if (isset($res)) {
+            $res = $res->toArray();
+        } else {
+            return response()->json([
+                'status' => 'endWords',
+            ]);
+        }
+
 
         $wordId = $res['word']['id'];
         $word = $res['word']['word'];
@@ -114,6 +176,39 @@ class TrainingController extends Controller
         return response()->json([
             'status' => 'success',
             'sentence' => $sentence,
+            'word' => $word,
+            'word_id' => $wordId,
+            'description' => $description,
+        ]);
+    }
+
+
+    public function getDescriptionWord()
+    {
+        $res = MyWord::where('user_id', auth()->id())
+          //  ->where('status', self::NEW)
+            ->where('repeated', '<', time() - 72000)
+            ->orWhere('repeated', '=', null)
+            ->with('word')
+            ->first();
+
+        if (isset($res)) {
+            $res = $res->toArray();
+        } else {
+            return response()->json([
+                'status' => 'endWords',
+            ]);
+        }
+
+        $wordId = $res['word']['id'];
+        $word = $res['word']['word'];
+        $description = $res['word']['description'];
+
+        // Просим ИИ сгенерировать предложение с этим словом
+        $sentence = 'Вчера я так горомко ...... что все соседи шарохались!';
+
+        return response()->json([
+            'status' => 'success',
             'word' => $word,
             'word_id' => $wordId,
             'description' => $description,

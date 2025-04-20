@@ -46,7 +46,7 @@ class HomeController extends Controller
             ->count();
 
         $repeatWords = MyWord::where('user_id', $userId)
-            ->where('status', 1)
+            ->whereBetween('status', [1,2])
             ->where('repeated', '<', time() - 72000)
             ->count();
 

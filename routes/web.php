@@ -24,13 +24,17 @@ Route::group(['middleware' => 'auth', 'prefix' => 'home'], function () {
     Route::get('/training', [HomeController::class, 'training'])->name('training');
     Route::get('/training-repeat', [TrainingController::class, 'repeat'])->name('training-repeat');
     Route::get('/training-sentence', [TrainingController::class, 'sentence'])->name('training-sentence');
+    Route::get('/training-description-word', [TrainingController::class, 'descriptionWord'])->name('training-description-word');
     Route::get('/training-remember', [TrainingController::class, 'remember'])->name('training-remember');
     // тренировки
     Route::get('/get-repeat-word', [TrainingController::class, 'getRepeatWord']);
     Route::get('/get-sentence', [TrainingController::class, 'getSentence']);
+    Route::get('/get-description-word', [TrainingController::class, 'getDescriptionWord']);
     Route::get('/get-remember', [TrainingController::class, 'getRememberWord']);
     Route::get('/done-repeat-word/{id}', [TrainingController::class, 'doneRepeatWord']);
     Route::get('/done-repeat-sentence/{id}', [TrainingController::class, 'doneRepeatSentence']);
+    Route::get('/done-repeat-description-word/{id}', [TrainingController::class, 'doneRepeatDescriptionWord']);
+    Route::get('/dont-know-repeat-description-word/{id}', [TrainingController::class, 'dontKnowRepeatDescriptionWord']);
     Route::get('/done-remember-word/{id}', [TrainingController::class, 'doneRememberWord']);
 
     Route::get('/wordlist', [WordListController::class, 'index'])->name('wordlist');
