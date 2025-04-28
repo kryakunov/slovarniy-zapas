@@ -2,29 +2,13 @@
 
 @section('content')
 
-        <div id="wordDescription" class="mt-20 text-sky-600 font-semibold text-xl">...</div>
+    <div id="word" class="mt-20 text-sky-600 font-semibold text-2xl">Слово</div>
+    <div id="description" class="text-sm mt-5 ml-50 mb-5 mr-50">Описание</div>
 
-        <div class="mb-1 text-cyan-900  w-90 flex justify-start mt-10">
-            Что это за слово?
-        </div>
-        <div class="mb-2 w-90 flex justify-center">
-            <input type="text" id="word-input" class="bg-gray-50 border w-100 border-cyan-600 text-gray-900 text-2xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2 dark:bg-white ">
-        </div>
-        <div class="flex mt-5">
-            <button id="buttonDontKnowWord" onclick="dontKnow()" class="cursor-pointer bg-red-400 hover:bg-red-500 py-3 px-6 text-white text-lg rounded">
-                Не помню
-            </button>
-            <button id="buttonCheckWord" onclick="checkWord()" class="ml-3 cursor-pointer bg-emerald-500 hover:bg-emerald-600 py-3 px-6 text-white text-lg rounded">
-                Проверить
-            </button>
-            <button id="buttonNextWord" style="display: none" onclick="nextWord()"  class="ml-3 mr-2 cursor-pointer bg-orange-400 hover:bg-orange-500 py-3 px-6 text-white text-lg rounded">
-                Следующее слово
-            </button>
-        </div>
-
-        <div id="wordCheckResultSuccess" class="mt-8 font-semibold text-xl text-green-600" style="display: none">Верно!</div>
-        <div id="wordCheckResultError" class="mt-8 font-semibold text-xl text-red-500" style="display: none">Неверно</div>
-
+    <button id="buttonNextWord"  onclick="sendDoneWord()"  class="ml-3 mr-2 cursor-pointer mt-3 py-3 px-6 text-white text-lg rounded">
+        Следующее слово
+    </button>
+    </div>
 
 @endsection
 <style>
@@ -53,14 +37,24 @@
     .fade-in {
         animation: fadeIn 2s forwards; /* Длительность 2 секунды */
     }
+
+    #buttonNextWord {
+        background-color: lightslategrey;
+        color: white;
+        padding: 15px;
+        margin-left: 5px;
+    }
+
+    #buttonNextWord:hover {
+        cursor: pointer;
+        background-color: forestgreen;
+    }
+
 </style>
 
 <script>
     getWord();
 
-    setTimeout(() => {
-        showNewWord();
-    }, 1000);
 
     let word = '';
     let description = '';
@@ -71,28 +65,9 @@
     const wordCheckResultError = document.getElementById('wordCheckResultError');
     const wordCheckResultSuccess = document.getElementById('wordCheckResultSuccess');
 
-    function showNewWord()
-    {
-        const wordCheckResultError = document.getElementById('wordCheckResultError');
-        const wordCheckResultSuccess = document.getElementById('wordCheckResultSuccess');
-        const wordDescription = document.getElementById('wordDescription');
-        const inputField = document.getElementById('word-input');
-        const buttonNextWord = document.getElementById('buttonNextWord');
-        const buttonCheckWord = document.getElementById('buttonCheckWord');
-        const buttonDontKnowWord = document.getElementById('buttonDontKnowWord');
-        wordCheckResultError.style.display = 'none';
-        wordCheckResultSuccess.style.display = 'none';
-        buttonNextWord.style.display = 'none';
-        buttonCheckWord.style.display = 'block';
-        buttonDontKnowWord.style.display = 'block';
-        inputField.value = '';
-        inputField.style.borderColor = 'black'
-        wordDescription.textContent = description;
-    }
-
     function getWord()
     {
-        fetch('/home/get-description-word')
+        fetch('/home/get-start-word')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Сеть не ответила: ' + response.statusText);
@@ -104,6 +79,10 @@
                     word = data.word;
                     description = data.description
                     wordId = data.word_id
+
+
+
+                    showNewWord();
 
                     buttonNextWordDisabledFalse();
 
@@ -120,6 +99,13 @@
             });
     }
 
+    function showNewWord()
+    {
+        const wordDiv = document.getElementById('word');
+        const descriptionDev = document.getElementById('description');
+        wordDiv.textContent = word;
+        descriptionDev.textContent = description;
+    }
 
     function buttonNextWordDisabledFalse()
     {
@@ -138,46 +124,13 @@
         buttonNextWord.classList.replace('hover:bg-orange-500', 'hover:bg-gray-500');
     }
 
-    function greenAnimate()
-    {
-        const inputField = document.getElementById('word-input');
-        const wordCheckResultError = document.getElementById('wordCheckResultError');
-        const wordCheckResultSuccess = document.getElementById('wordCheckResultSuccess');
 
-        wordCheckResultSuccess.style.display = 'block';
-        wordCheckResultError.style.display = 'none';
-        inputField.style.borderColor = 'green'
-
-        document.body.classList.add('fade-in');
-
-        setTimeout(() => {
-            document.body.classList.remove('fade-in');
-        }, 500);
-    }
-
-    function redAnimate()
-    {
-        const inputField = document.getElementById('word-input');
-        const wordCheckResultError = document.getElementById('wordCheckResultError');
-        const wordCheckResultSuccess = document.getElementById('wordCheckResultSuccess');
-
-        wordCheckResultSuccess.style.display = 'none';
-        wordCheckResultError.style.display = 'block';
-        inputField.style.borderColor = 'red'
-
-        document.body.classList.add('fade-out');
-
-        // Удаляем класс через 2 секунды, чтобы можно было повторно нажать на кнопку
-        setTimeout(() => {
-            document.body.classList.remove('fade-out');
-        }, 500);
-    }
 
     function sendDoneWord()
     {
         buttonNextWordDisabledTrue();
 
-        fetch('/home/done-repeat-description-word/' + wordId)
+        fetch('/home/done-start-word/' + wordId)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Сеть не ответила: ' + response.statusText);

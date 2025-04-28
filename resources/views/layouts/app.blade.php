@@ -13,14 +13,14 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/app.css'])
+    @vite([ 'resources/js/app.js', 'resources/css/app.css'])
 </head>
 <body class="bg-[#339dc8]">
 <div id="app">
     <nav class="bg-white shadow">
         <div class="container mx-auto px-4 py-2 flex justify-between items-center">
             <a class="text-lg font-semibold text-gray-800" href="{{ url('/') }}">
-                {{ config('app.name', 'Laravel') }}
+                Словарный запас
             </a>
             <button class="md:hidden flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-700 hover:border-gray-700" type="button" aria-label="{{ __('Toggle navigation') }}">
                 <svg class="fill-current h-3 w-3" viewBox="0 0 20 20"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0v-2zm0 6h20v2H0v-2z"/></svg>

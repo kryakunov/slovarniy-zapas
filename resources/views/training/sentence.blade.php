@@ -2,6 +2,8 @@
 
 @section('content')
 
+
+
         <div id="sentence" class="mt-20 text-sky-600 font-semibold text-xl"></div>
 
         <div class="mb-1 text-cyan-900  w-90 flex justify-start mt-10">
@@ -192,7 +194,11 @@
                     inputField.style.borderColor = '#0E7490'
                     inputField.value = '';
                 } else if(data.status == 'endWords') {
-                    alert('Слова закончились!')
+                    const popup = document.getElementById('endWords');
+                    const overlay = document.getElementById('overlay');
+
+                    endWords.style.display = 'block';
+                    overlay.style.display = 'block';
                 }
             })
             .catch(error => {

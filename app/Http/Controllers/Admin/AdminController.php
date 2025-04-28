@@ -48,6 +48,7 @@ class AdminController extends Controller
         WordList::create([
             'title' => $request->title,
             'description' => $request->description,
+            'slug' => $request->slug,
             'category_id' => 1,
             'type_id' => 1,
         ]);

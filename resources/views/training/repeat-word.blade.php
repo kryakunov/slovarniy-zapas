@@ -4,23 +4,9 @@
 
         <div id="wordDescription" class="mt-20 text-sky-600 font-semibold text-xl">...</div>
 
-        <div class="mb-1 text-cyan-900  w-90 flex justify-start mt-10">
-            Что это за слово?
-        </div>
-        <div class="mb-2 w-90 flex justify-center">
-            <input type="text" id="word-input" class="bg-gray-50 border w-100 border-cyan-600 text-gray-900 text-2xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2 dark:bg-white ">
-        </div>
-        <div class="flex mt-5">
-            <button id="buttonDontKnowWord" onclick="dontKnow()" class="cursor-pointer bg-red-400 hover:bg-red-500 py-3 px-6 text-white text-lg rounded">
-                Не помню
-            </button>
-            <button id="buttonCheckWord" onclick="checkWord()" class="ml-3 cursor-pointer bg-emerald-500 hover:bg-emerald-600 py-3 px-6 text-white text-lg rounded">
-                Проверить
-            </button>
-            <button id="buttonNextWord" style="display: none" onclick="nextWord()"  class="ml-3 mr-2 cursor-pointer bg-orange-400 hover:bg-orange-500 py-3 px-6 text-white text-lg rounded">
-                Следующее слово
-            </button>
-        </div>
+
+        <div id="wordContainer"></div>
+
 
         <div id="wordCheckResultSuccess" class="mt-8 font-semibold text-xl text-green-600" style="display: none">Верно!</div>
         <div id="wordCheckResultError" class="mt-8 font-semibold text-xl text-red-500" style="display: none">Неверно</div>
@@ -28,6 +14,11 @@
 
 @endsection
 <style>
+    .non-clickable {
+        pointer-events: none; /* Отключаем клики */
+        opacity: 0.5; /* Можно добавить эффект, чтобы показать, что элемент неактивен */
+    }
+
     /* Анимация для плавного исчезновения фона */
     @keyframes fadeOut {
         0% {
@@ -53,6 +44,23 @@
     .fade-in {
         animation: fadeIn 2s forwards; /* Длительность 2 секунды */
     }
+
+    #wordContainer {
+        margin-top: 70px;
+    }
+
+    #wordContainer span {
+        background-color: lightslategrey;
+        color: white;
+        padding: 15px;
+        border-radius: 5%;
+        margin-left: 5px;
+    }
+
+    #wordContainer span:hover {
+        cursor: pointer;
+        background-color: forestgreen;
+    }
 </style>
 
 <script>
@@ -65,6 +73,7 @@
     let word = '';
     let description = '';
     let wordId = 0;
+    let words = [];
 
     const wordDescription = document.getElementById('wordDescription');
     const inputField = document.getElementById('word-input');
@@ -73,26 +82,51 @@
 
     function showNewWord()
     {
+        const wordContainer = document.getElementById('wordContainer');
+
+        if (wordContainer.classList.contains('non-clickable')) {
+            wordContainer.classList.remove('non-clickable');
+        }
+
         const wordCheckResultError = document.getElementById('wordCheckResultError');
         const wordCheckResultSuccess = document.getElementById('wordCheckResultSuccess');
-        const wordDescription = document.getElementById('wordDescription');
-        const inputField = document.getElementById('word-input');
-        const buttonNextWord = document.getElementById('buttonNextWord');
-        const buttonCheckWord = document.getElementById('buttonCheckWord');
-        const buttonDontKnowWord = document.getElementById('buttonDontKnowWord');
-        wordCheckResultError.style.display = 'none';
+
         wordCheckResultSuccess.style.display = 'none';
-        buttonNextWord.style.display = 'none';
-        buttonCheckWord.style.display = 'block';
-        buttonDontKnowWord.style.display = 'block';
-        inputField.value = '';
-        inputField.style.borderColor = 'black'
-        wordDescription.textContent = description;
+        wordCheckResultError.style.display = 'none';
+
+        // Получаем элемент, в который будем добавлять слова
+        wordContainer.textContent = '';
+
+        // Проходим по массиву и добавляем каждое слово в контейнер
+        words.forEach((word, index) => {
+            const wordElement = document.createElement('span'); // Создаем новый элемент <span>
+            wordElement.textContent = word.word; // Устанавливаем текст элемента
+
+            // Добавляем обработчик клика
+            wordElement.addEventListener('click', () => checkWord(word.word));
+
+            wordContainer.appendChild(wordElement); // Добавляем элемент в контейнер
+
+
+        });
+
+        // const wordCheckResultError = document.getElementById('wordCheckResultError');
+        // const wordCheckResultSuccess = document.getElementById('wordCheckResultSuccess');
+         const wordDescription = document.getElementById('wordDescription');
+        // const buttonNextWord = document.getElementById('buttonNextWord');
+        // const buttonCheckWord = document.getElementById('buttonCheckWord');
+        // const buttonDontKnowWord = document.getElementById('buttonDontKnowWord');
+        // wordCheckResultError.style.display = 'none';
+        // wordCheckResultSuccess.style.display = 'none';
+        // buttonNextWord.style.display = 'none';
+        // buttonCheckWord.style.display = 'block';
+        // buttonDontKnowWord.style.display = 'block';
+         wordDescription.textContent = description;
     }
 
     function getWord()
     {
-        fetch('/home/get-description-word')
+        fetch('/home/get-remember')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Сеть не ответила: ' + response.statusText);
@@ -104,9 +138,8 @@
                     word = data.word;
                     description = data.description
                     wordId = data.word_id
-
-                    buttonNextWordDisabledFalse();
-
+                    words = data.words
+                    showNewWord()
                 } else if(data.status == 'endWords') {
                     const popup = document.getElementById('endWords');
                     const overlay = document.getElementById('overlay');
@@ -121,15 +154,6 @@
     }
 
 
-    function buttonNextWordDisabledFalse()
-    {
-        const buttonNextWord = document.getElementById('buttonNextWord');
-        buttonNextWord.disabled = false;
-        buttonNextWord.classList.replace('bg-gray-500', 'bg-orange-400');
-        buttonNextWord.classList.replace('hover:bg-gray-500', 'hover:bg-orange-500');
-    }
-
-
     function buttonNextWordDisabledTrue()
     {
         const buttonNextWord = document.getElementById('buttonNextWord');
@@ -140,13 +164,11 @@
 
     function greenAnimate()
     {
-        const inputField = document.getElementById('word-input');
         const wordCheckResultError = document.getElementById('wordCheckResultError');
         const wordCheckResultSuccess = document.getElementById('wordCheckResultSuccess');
 
         wordCheckResultSuccess.style.display = 'block';
         wordCheckResultError.style.display = 'none';
-        inputField.style.borderColor = 'green'
 
         document.body.classList.add('fade-in');
 
@@ -157,13 +179,12 @@
 
     function redAnimate()
     {
-        const inputField = document.getElementById('word-input');
+
         const wordCheckResultError = document.getElementById('wordCheckResultError');
         const wordCheckResultSuccess = document.getElementById('wordCheckResultSuccess');
 
         wordCheckResultSuccess.style.display = 'none';
         wordCheckResultError.style.display = 'block';
-        inputField.style.borderColor = 'red'
 
         document.body.classList.add('fade-out');
 
@@ -175,8 +196,6 @@
 
     function sendDoneWord()
     {
-        buttonNextWordDisabledTrue();
-
         fetch('/home/done-repeat-description-word/' + wordId)
             .then(response => {
                 if (!response.ok) {
@@ -186,6 +205,25 @@
             })
             .then(data => {
                 getWord(); // получаем новое слово
+
+            })
+            .catch(error => {
+                console.error('Ошибка:', error); // Обработка ошибок
+            });
+    }
+
+    function sendErrorWord()
+    {
+        fetch('/home/error-repeat-description-word/' + wordId)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Сеть не ответила: ' + response.statusText);
+                }
+                return response.json(); // Преобразуем ответ в JSON
+            })
+            .then(data => {
+                getWord(); // получаем новое слово
+
             })
             .catch(error => {
                 console.error('Ошибка:', error); // Обработка ошибок
@@ -211,24 +249,26 @@
             });
     }
 
-    function checkWord()
+    function checkWord(wordClick)
     {
-        const input = document.getElementById('word-input').value; // Получаем значение из input
-        const wordInput = input.replace(/\s+/g, ''); // Удаляем пробелы
+
+        const wordContainer = document.getElementById('wordContainer');
+        wordContainer.classList.add('non-clickable')
 
         // проверяем, совпадают ли слова
-        if (word.toLowerCase() == wordInput.toLowerCase()) {
+        if (word.toLowerCase() == wordClick.toLowerCase()) {
             greenAnimate();
             sendDoneWord();
-            showButtonNextWord();
         } else {
             redAnimate();
+            sendErrorWord();
         }
     }
 
     function nextWord()
     {
         showNewWord();
+
     }
 
     function showButtonNextWord()

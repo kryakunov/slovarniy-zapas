@@ -1,18 +1,17 @@
- @forelse($wordLists as $list)
-     <div class="bg-white shadow-md border border-gray-100 p-5 rounded-2xl w-70 flex flex-col h-full">
-         <h2 class="text-lg font-semibold mb-5">{{ $list['title'] }}</h2>
-         <img class="mb-5 rounded-2xl" src="{{ $list['image'] }}" alt="{{ $list['title'] }}">
-         <div class="flex-grow h-30 mb-5">{{ $list['description'] }}</div>
-         <div class="flex justify-center mb-0">
-             <a href="{{ route('open-word-list', $list['id']) }}" class="w-full text-center bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
-                 Открыть
-             </a>
-         </div>
-     </div>
-@empty
-    Не найдено
-@endforelse
 
+    @forelse($wordLists as $list)
+        <div class="bg-white shadow-md border border-gray-100 rounded-xl flex flex-col hover:shadow-xl">
+            <a href="{{ route('open-word-list', $list['slug']) }}">
+                <img class="mb-5 rounded-t-xl" src="{{ $list['image'] }}" alt="{{ $list['title'] }}">
+                <h2 class="text-sm h-20 font-semibold pl-4 pr-4">{{ $list['title'] }}</h2>
+                <div class="flex-grow pl-4 mt-7 text-gray-400 mb-5">
+                    <div class="font-semibold">{{ $list->type?->title }}</div>
+                    <div>{{ $list['count'] }} слов</div>
+                </div>
+            </a>
+        </div>
 
-
+    @empty
+        Не найдено
+    @endforelse
 

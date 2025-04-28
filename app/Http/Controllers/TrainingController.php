@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MyWord;
 use App\Models\Word;
+use App\Services\GigaChatService;
 use Illuminate\Http\Request;
 
 class TrainingController extends Controller
@@ -12,9 +13,14 @@ class TrainingController extends Controller
     const REPEAT = 1;
     const DONE = 2;
 
+    public function start()
+    {
+        return view('training.start');
+    }
+
     public function repeat()
     {
-        return view('training.repeat');
+        return view('training.repeat-word');
     }
 
     public function sentence()
@@ -27,16 +33,11 @@ class TrainingController extends Controller
         return view('training.description-word');
     }
 
-    public function remember()
-    {
-        return view('training.remember');
-    }
-
 
     public function getRepeatWord()
     {
         $word = MyWord::where('user_id', auth()->id())
-            ->where('status', self::NEW)
+            ->where('status', self::REPEAT)
             ->with('word')
             ->first()
             ->toArray();
@@ -71,7 +72,7 @@ class TrainingController extends Controller
         $lastRepeat = time() - $word->repeated;
 
         // если прошло более суток (22 часа) с момента последнего повтора
-        if ($lastRepeat > 72000) {
+        if ($lastRepeat > 72000 / 2) {
 
             $word->count_repeated++;
 
@@ -106,7 +107,7 @@ class TrainingController extends Controller
         $lastRepeat = time() - $word->repeated;
 
         // если прошло более суток (22 часа) с момента последнего повтора
-        if ($lastRepeat > 72000) {
+        if ($lastRepeat > 72000 /2 ) {
 
             $word->count_repeated++;
 
@@ -121,6 +122,36 @@ class TrainingController extends Controller
                     break;
             }
         }
+
+        $word->repeated = time();
+        $word->update();
+
+        // TODO рассчитать исходя из даты последнего повтора, прибавлять ли count repeated
+
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
+
+    public function doneStartWord($id)
+    {
+        $word = MyWord::where('user_id', auth()->id())
+            ->where('word_id', $id)
+            ->first();
+
+        $word->status = self::REPEAT;
+        $word->update();
+
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
+
+    public function errorRepeatDescriptionWord($id)
+    {
+        $word = MyWord::where('user_id', auth()->id())
+            ->where('word_id', $id)
+            ->first();
 
         $word->repeated = time();
         $word->update();
@@ -148,12 +179,14 @@ class TrainingController extends Controller
         ]);
     }
 
-    public function getSentence()
+    public function getSentence(GigaChatService $chatService)
     {
         $res = MyWord::where('user_id', auth()->id())
-          //  ->where('status', self::NEW)
-            ->where('repeated', '<', time() - 72000)
-            ->orWhere('repeated', '=', null)
+            ->where('status', self::REPEAT)
+            ->where(function($query) {
+                $query->where('repeated', '<', time() - 72000 / 2)
+                    ->orWhere('repeated', '=', null);
+            })
             ->with('word')
             ->first();
 
@@ -165,13 +198,12 @@ class TrainingController extends Controller
             ]);
         }
 
-
         $wordId = $res['word']['id'];
         $word = $res['word']['word'];
         $description = $res['word']['description'];
 
         // Просим ИИ сгенерировать предложение с этим словом
-        $sentence = 'Вчера я так горомко ...... что все соседи шарохались!';
+        $sentence = $chatService->generate($word);
 
         return response()->json([
             'status' => 'success',
@@ -186,9 +218,11 @@ class TrainingController extends Controller
     public function getDescriptionWord()
     {
         $res = MyWord::where('user_id', auth()->id())
-          //  ->where('status', self::NEW)
-            ->where('repeated', '<', time() - 72000)
-            ->orWhere('repeated', '=', null)
+            ->where('status', self::REPEAT)
+            ->where(function($query) {
+                $query->where('repeated', '<', time() - 72000 / 2)
+                    ->orWhere('repeated', '=', null);
+            })
             ->with('word')
             ->first();
 
@@ -215,17 +249,63 @@ class TrainingController extends Controller
         ]);
     }
 
-    public function getRememberWord()
+    public function getStartWord()
     {
         $res = MyWord::where('user_id', auth()->id())
             ->where('status', self::NEW)
             ->with('word')
-            ->first()
-            ->toArray();
+            ->first();
+
+        if (isset($res)) {
+            $res = $res->toArray();
+        } else {
+            return response()->json([
+                'status' => 'endWords',
+            ]);
+        }
 
         $wordId = $res['word']['id'];
         $word = $res['word']['word'];
         $description = $res['word']['description'];
+
+        return response()->json([
+            'status' => 'success',
+            'word' => $word,
+            'word_id' => $wordId,
+            'description' => $description,
+        ]);
+    }
+
+    public function getRememberWord()
+    {
+        $res = MyWord::where('user_id', auth()->id())
+            ->where('status', self::REPEAT)
+            ->where('repeated', '<', time() - 72000 / 2)
+            ->orWhere('repeated', '=', null)
+            ->with('word')
+            ->first();
+
+        $res = MyWord::where('user_id', auth()->id())
+            ->where('status', self::REPEAT)
+            ->where(function($query) {
+                $query->where('repeated', '<', time() - 72000 / 2)
+                      ->orWhere('repeated', '=', null);
+            })
+            ->with('word')
+            ->first();
+
+        if (isset($res)) {
+            $res = $res->toArray();
+        } else {
+            return response()->json([
+                'status' => 'endWords',
+            ]);
+        }
+
+        $wordId = $res['word']['id'];
+        $word = $res['word']['word'];
+        $description = $res['word']['description'];
+
         $words = Word::select('word')->inRandomOrder()->take(5)->get()->toArray();
         $words[] = ['word' => $word];
         shuffle($words);
@@ -237,5 +317,6 @@ class TrainingController extends Controller
             'word_id' => $wordId,
             'description' => $description,
         ]);
+
     }
 }

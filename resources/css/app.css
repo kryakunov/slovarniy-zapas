@@ -12,3 +12,42 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+
+.popup {
+    display: none; /* Скрываем попап по умолчанию */
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    width: 30%; /* Ширина попапа 50% */
+    height: 50%; /* Высота попапа 50% */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Тень */
+    padding: 20px;
+    z-index: 1000;
+    overflow: auto; /* Прокрутка, если контент превышает высоту */
+}
+.overlay {
+    display: none; /* Скрываем оверлей по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+}
+.close-btn {
+    cursor: pointer;
+    color: red;
+    display: block;
+    margin-top: 20px;
+}
+
+.non-clickable {
+    pointer-events: none; /* Отключает все события указателя */
+    /* Дополнительно можно добавить стиль, чтобы визуально показать, что элемент некликабельный */
+    opacity: 0.5; /* Пример: сделать элемент полупрозрачным */
+}

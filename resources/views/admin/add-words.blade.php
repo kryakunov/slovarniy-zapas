@@ -10,11 +10,9 @@
             <a href="{{ route('admin.add-list') }}" class="items-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded cursor-pointer">Добавить словарь</a>
         </div>
 
-        <div class="grid grid-cols-4 gap-5">
 
             @include('admin._word-lists')
 
-        </div>
     </main>
 
 @endsection

@@ -14,50 +14,34 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/app.css'])
+    @vite([ 'resources/js/app.js', 'resources/css/app.css'])
 
-    <style>
-
-        .popup {
-            display: none; /* Скрываем попап по умолчанию */
-            position: fixed;
-            left: 50%;
-            top: 40%;
-            transform: translate(-50%, -50%);
-            width: 30%; /* Ширина попапа 50% */
-            height: 50%; /* Высота попапа 50% */
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Тень */
-            padding: 20px;
-            z-index: 1000;
-            overflow: auto; /* Прокрутка, если контент превышает высоту */
-        }
-        .overlay {
-            display: none; /* Скрываем оверлей по умолчанию */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            z-index: 999;
-        }
-        .close-btn {
-            cursor: pointer;
-            color: red;
-            display: block;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body class="bg-gray-50">
 
 <div class="overlay" id="overlay"></div>
 <div class="popup text-center" id="popup">
     <div class="text-2xl mt-10">Тренировка закончена</div>
-    <div class="mt-10">Вы молодец!</div>
-    <div class="mt-15">
+    <div class="mt-5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 64 64"><path fill="#ffdd7d" d="M59.7 13.8c1.7-5.2 1.2-14.9-16.6-3.2C25 22.5 6.2 50.3 7.6 55.4c1.1 4 17.3-5 26-17.2c.7-1 8.7 8.8 7.6 9.8C33.4 55.8 8.3 65.7 3 60.6c-6.1-5.9 16.7-39.8 40.1-53.3c6.4-3.7 25.5-12.5 16.6 6.5"/><path fill="#ffd05a" d="M60.6 49.5L46.7 48l-9.1 10.6l-2.9-13.7l-12.9-5.4l12.2-7l1.2-13.9L45.5 28l13.6-3.2l-5.7 12.7l7.2 12"/></svg>
+        Вы молодец!</div>
+    <div class="m-5">Возвращайтесь к тренировке позже, чтобы слова отложились в долгосрочной памяти</div>
+    <div class="mt-10">
+        <button onclick="confirmClose()" class="cursor-pointer w-full bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded">Выйти</button>
+    </div>
+</div>
+
+<div class="popup text-center" id="endWords">
+    <div class="text-2xl mt-10">
+        Слова закончились</div>
+    <div class="mt-5 flex text-center justify-center">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 64 64"><path fill="#ffdd7d" d="M59.7 13.8c1.7-5.2 1.2-14.9-16.6-3.2C25 22.5 6.2 50.3 7.6 55.4c1.1 4 17.3-5 26-17.2c.7-1 8.7 8.8 7.6 9.8C33.4 55.8 8.3 65.7 3 60.6c-6.1-5.9 16.7-39.8 40.1-53.3c6.4-3.7 25.5-12.5 16.6 6.5"/><path fill="#ffd05a" d="M60.6 49.5L46.7 48l-9.1 10.6l-2.9-13.7l-12.9-5.4l12.2-7l1.2-13.9L45.5 28l13.6-3.2l-5.7 12.7l7.2 12"/></svg>
+        </div>
+        <div class="ml-3">Вы молодец, вы повторили все слова!</div>
+    </div>
+    <div class="m-5">Вощвращайтесь к тренировкам позже, чтобы слова отложились в долгосрочной памяти</div>
+    <div class="mt-10">
         <button onclick="confirmClose()" class="cursor-pointer w-full bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded">Выйти</button>
     </div>
 </div>
@@ -80,7 +64,7 @@
 
 <script>
     function confirmClose() {
-        window.history.back();
+        window.location.href = "/home/training/";
     }
 
     const openPopupButton = document.getElementById('openPopup');

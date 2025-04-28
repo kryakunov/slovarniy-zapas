@@ -4,8 +4,8 @@
 
     <!-- Main Content -->
     <main class="flex-1 p-6">
-
-        <h1 class="text-2xl mb-5">На изучении</h1>
+        <div class="bg-white shadow-sm rounded-lg p-4">
+        <h1 class="text-2xl mb-5">Наборы слов</h1>
         <div class="grid grid-cols-6 gap-6">
             @forelse($wordLists as $list)
                 <div class="bg-white shadow-md border border-gray-100 rounded-xl flex flex-col hover:shadow-xl">
@@ -35,10 +35,7 @@
                 Не найдено
             @endforelse
         </div>
-
-
-
-
+        </div>
     </main>
 
 @endsection

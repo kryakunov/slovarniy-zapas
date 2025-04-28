@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('word');
             $table->text('description')->nullable();
             $table->integer('likes')->nullable();
-            $table->foreignId('word_list_id')->index()->constrained();
+            $table->foreignId('word_list_id')->index()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

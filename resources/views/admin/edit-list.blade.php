@@ -5,9 +5,13 @@
     <!-- Main Content -->
     <main class="flex-1 p-6">
         <h1 class="mb-10 text-2xl w-50">Редактировать словарь</h1>
-
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
         <div class="m-3 mb-5 w-100">
-            <a href="{{ route('admin.add-words') }}" class="items-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded cursor-pointer">Назад</a>
+            <a onclick="goBack()" class="items-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded cursor-pointer">Назад</a>
         </div>
 
         <form action="{{ route('admin.edit-list', $wordList['id']) }}" method="POST" enctype="multipart/form-data">

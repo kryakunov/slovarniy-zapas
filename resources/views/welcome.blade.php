@@ -36,14 +36,19 @@
                 </div>
             </div>
             <div class="flex">
-                <div>
-                <h2 class="text-6xl font-bold p-4 mt-20">Изучайте новые слова<br/>через практику</h2>
-                <p class="p-4">Внедряйте новые слова в свою речь практикуясь</p>
+                <div class="w-[70%]">
+                <h2 class="text-6xl font-bold p-4 mt-10">Изучайте новые слова<br/>через практику</h2>
+
+                <p class="p-4 text-xl mt-5">Метод изучения новых слов основан на <a href="https://ru.wikipedia.org/wiki/%D0%9A%D1%80%D0%B8%D0%B2%D0%B0%D1%8F_%D0%B7%D0%B0%D0%B1%D1%8B%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F" target="_blank" class="border-b text-sky-100 font-semibold border-dashed ml-2">«кривой Эббингауза»</a>
+                    — механики обучения,
+                    которая учитывает особенности нашей памяти к запоминанию новой информации. </p>
+
+                    <a href="{{ route('login') }}">
                 <button type="button" class="p-5 pl-10 pr-10 focus:outline-none text-white bg-red-400 font-medium
                      rounded-4xl mt-10 text-2xl cursor-pointer"
                 >
-                    <a href="{{ route('login') }}">Попробовать бесплатно</a>
-                </button>
+                   Попробовать бесплатно
+                </button></a>
 
                 </div>
 
@@ -106,7 +111,7 @@
                         // Предположим, что у каждого объекта есть поле 'name'
                         html += '<p>' + item.title + '</p>';
                     });
-                    $('#dataContainer').html(html); // Обновляем содержимое контейнера
+                    $('#dataContainer').html('<span>dsfdsf</span>'); // Обновляем содержимое контейнера
 
                 },
                 error: function(xhr, status, error) {
@@ -117,30 +122,31 @@
     </script>
 </div>
         <div class="bg-gray-200  p-10 text-black flex justify-center items-center ">
-        <div><p class="text-4xl text-center mb-10 text-[#339dc8]">Словари на любой вкус</p>
+        <div><p class="text-4xl text-center mb-10 text-[#339dc8]">Словари на все случаи жизни</p>
 
-    <div class="flex items-center justify-center mb-10 ">
-    <div class="w-[70%] p-6 ">
-        <div class="flex flex-wrap gap-2">
-            @forelse($categories as $category)
-                <a onclick="getData({{$category['id']}})">
-            <span class="bg-white  px-4 py-1 rounded-full text-sm cursor-pointer hover:bg-gray-100">{{ $category['title'] }}</span>
-                </a>
-            @empty
-            @endforelse
-        </div>
-    </div>
-    </div>
-    <div class="grid grid-cols-4 gap-5" id="dataContainer">
+{{--    <div class="flex items-center justify-center mb-10 ">--}}
+{{--    <div class="w-[70%] p-6 ">--}}
+{{--        <div class="flex flex-wrap gap-2 bg-sky-200">--}}
+{{--            @forelse($categories as $category)--}}
+{{--                <a onclick="getData({{$category['id']}})">--}}
+{{--            <span class="bg-white  px-4 py-1 rounded-full text-sm cursor-pointer hover:bg-gray-100">{{ $category['title'] }}</span>--}}
+{{--                </a>--}}
+{{--            @empty--}}
+{{--            @endforelse--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--    </div>--}}
+    <div class="grid grid-cols-6 ml-25 mr-25 gap-5" id="dataContainer">
         @include('word-lists')
     </div>
 
     <div class="text-center">
+        <a href="{{ route('login') }}">
         <button type="button" class="p-5 pl-10 pr-10 focus:outline-none text-white bg-red-400 font-medium
                          rounded-4xl mt-10 text-2xl cursor-pointer"
         >
-            <a href="{{ route('login') }}">Смотреть все слова</a>
-        </button>
+            Смотреть все словари
+        </button></a>
     </div>
 
 

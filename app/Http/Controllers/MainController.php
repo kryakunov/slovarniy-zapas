@@ -10,11 +10,16 @@ class MainController extends Controller
 {
     public function index()
     {
-        $wordLists = WordList::take(4)->get();
+        $wordLists = WordList::take(6)->get();
         $words = Word::all();
         $categories = Category::all();
 
         return view('welcome', compact('wordLists', 'words', 'categories'));
+    }
+
+    public function about()
+    {
+        return view('home.about');
     }
 
     public function getWordLists($id)

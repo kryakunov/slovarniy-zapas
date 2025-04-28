@@ -87,11 +87,22 @@ class WordListController extends Controller
 
     public function addWords(Request $request)
     {
-        dd($request->all());
 
-        MyWord::create([
-            'user_id' => auth()->id(),
-            'word_id' => $id
+        $ids = $request->words;
+
+        if ($request->action == 'delete')
+        {
+            MyWord::whereIn('id', $ids)->delete();
+        } elseif ($request->action == 'new') {
+            MyWord::whereIn('id', $ids)->update(['status' => 0]);
+        } elseif ($request->action == 'repeat') {
+            MyWord::whereIn('id', $ids)->update(['status' => 1]);
+        } elseif ($request->action == 'done') {
+            MyWord::whereIn('id', $ids)->update(['status' => 2]);
+        }
+
+        return response()->json([
+            'status' => 'success',
         ]);
     }
 }

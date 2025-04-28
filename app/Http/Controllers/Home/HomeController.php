@@ -37,36 +37,50 @@ class HomeController extends Controller
         $all = [];
         $count = 0;
         foreach($wordLists as $wordList){
-            $all[] = $wl = WordList::where('id', $wordList->word_list_id)->first();
-            $count += $wl->count;
+            $wl = WordList::where('id', $wordList->word_list_id)->first();
+            $wl['done'] = MyWord::where('user_id', $userId)
+                ->where('word_list_id', $wl->id)
+                ->where('status', 2)
+                ->count();
+            $all[] = $wl;
         }
+
+        $totalWords = MyWord::where('user_id', $userId)
+            ->count();
 
         $doneWords = MyWord::where('user_id', $userId)
             ->where('status', 2)
             ->count();
 
+        $newWords = MyWord::where('user_id', $userId)
+            ->where('status', 0)
+            ->count();
+
         $repeatWords = MyWord::where('user_id', $userId)
-            ->whereBetween('status', [1,2])
-            ->where('repeated', '<', time() - 72000)
+            ->where('status', 1)
+            ->where(function($query) {
+                $query
+                    ->where('repeated', '<', time() - 72000 / 2)
+                    ->orWhere('repeated', null);
+            })
             ->count();
 
         $repeatedWords = MyWord::where('user_id', $userId)
-            ->where('status', 1)
-            ->where('repeated', '>', time() - 72000)
+          //  ->where('status', 1)
+            ->where('repeated', '>', time() - 72000/2)
             ->count();
 
         $allWords = MyWord::where('user_id', $userId)
             ->count();
 
-        $percent = 5;//($doneWords / $allWords) * 100;
 
         return view('home.index', [
             'wordLists' => $all,
             'doneWords' => $doneWords,
             'repeatWords' => $repeatWords,
             'repeatedWords' => $repeatedWords,
-            'allWords' => $allWords,
-            'percent' => $percent,
+            'totalWords' => $totalWords,
+            'newWords' => $newWords,
         ]);
     }
 
@@ -89,6 +103,21 @@ class HomeController extends Controller
 
     public function training()
     {
-        return view('home.training');
+        $userId = auth()->id();
+
+        $repeatWords = MyWord::where('user_id', $userId)
+            ->where('status', 1)
+            ->where(function($query) {
+                $query
+                    ->where('repeated', '<', time() - 72000 / 2)
+                    ->orWhere('repeated', null);
+            })
+            ->count();
+
+        $newWords = MyWord::where('user_id', $userId)
+            ->where('status', 0)
+            ->count();
+
+        return view('home.training', compact('repeatWords', 'newWords'));
     }
 }

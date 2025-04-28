@@ -9,6 +9,7 @@ use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index']);
+Route::get('/about', [MainController::class, 'about']);
 Route::get('/go', [GigaChatController::class, 'index'])->name('go');
 Route::get('/vue', function(){
     return view('app');
@@ -22,18 +23,22 @@ Route::group(['middleware' => 'auth', 'prefix' => 'home'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/lists', [HomeController::class, 'lists'])->name('lists');
     Route::get('/training', [HomeController::class, 'training'])->name('training');
+    Route::get('/training-start', [TrainingController::class, 'start'])->name('training-start');
     Route::get('/training-repeat', [TrainingController::class, 'repeat'])->name('training-repeat');
     Route::get('/training-sentence', [TrainingController::class, 'sentence'])->name('training-sentence');
     Route::get('/training-description-word', [TrainingController::class, 'descriptionWord'])->name('training-description-word');
-    Route::get('/training-remember', [TrainingController::class, 'remember'])->name('training-remember');
+
     // тренировки
     Route::get('/get-repeat-word', [TrainingController::class, 'getRepeatWord']);
     Route::get('/get-sentence', [TrainingController::class, 'getSentence']);
     Route::get('/get-description-word', [TrainingController::class, 'getDescriptionWord']);
+    Route::get('/get-start-word', [TrainingController::class, 'getStartWord']);
     Route::get('/get-remember', [TrainingController::class, 'getRememberWord']);
     Route::get('/done-repeat-word/{id}', [TrainingController::class, 'doneRepeatWord']);
     Route::get('/done-repeat-sentence/{id}', [TrainingController::class, 'doneRepeatSentence']);
     Route::get('/done-repeat-description-word/{id}', [TrainingController::class, 'doneRepeatDescriptionWord']);
+    Route::get('/done-start-word/{id}', [TrainingController::class, 'doneStartWord']);
+    Route::get('/error-repeat-description-word/{id}', [TrainingController::class, 'errorRepeatDescriptionWord']);
     Route::get('/dont-know-repeat-description-word/{id}', [TrainingController::class, 'dontKnowRepeatDescriptionWord']);
     Route::get('/done-remember-word/{id}', [TrainingController::class, 'doneRememberWord']);
 
@@ -45,7 +50,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'home'], function () {
     Route::get('/remove-word-list/{id}', [WordListController::class, 'removeWordList'])->name('add-word-list');
 });
 
-Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
+Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/add-words', [AdminController::class, 'addWords'])->name('admin.add-words');
     // редактировать словарь

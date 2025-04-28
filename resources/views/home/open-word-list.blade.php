@@ -4,7 +4,7 @@
 
         <div class="flex items-center mb-5">
             <div class="cursor-pointer mr-5">
-                <a href="{{ url()->previous() }}">
+                <a href="/home/lists">
                 <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
                 </svg>
@@ -19,30 +19,30 @@
             </div>
         </div>
 
-        <div class="flex items-center">
-            <div class="mb-4 p-2 flex items-center font-semibold text-sky-800">
-                <div class="items-center flex">
-                <input type="checkbox" onchange="toggleCheckbox(this)"  style="width: 18px; height: 18px; cursor: pointer;" >
-                <span class="ml-4">Выбрано слов: </span> &nbsp; <span id="count" class="font-semibold">0</span>
-                <meta name="csrf-token" content="{{ csrf_token() }}">
-                </div>
+{{--        <div class="flex items-center">--}}
+{{--            <div class="mb-4 p-2 flex items-center font-semibold text-sky-800">--}}
+{{--                <div class="items-center flex">--}}
+{{--                <input type="checkbox" onchange="toggleCheckbox(this)"  style="width: 18px; height: 18px; cursor: pointer;" >--}}
+{{--                <span class="ml-4">Выбрано слов: </span> &nbsp; <span id="count" class="font-semibold">0</span>--}}
+{{--                <meta name="csrf-token" content="{{ csrf_token() }}">--}}
+{{--                </div>--}}
 
-                <div class="block">
-                <button onclick="addWords()" class="ml-10 text-sm cursor-pointer bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-sm">
-                    Добавить слова
-                </button>
-                </div>
-            </div>
+{{--                <div class="block">--}}
+{{--                <button onclick="addWords()" class="ml-10 text-sm cursor-pointer bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-sm">--}}
+{{--                    Добавить слова--}}
+{{--                </button>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
-        </div>
+{{--        </div>--}}
 
             @forelse($words as $word)
                 <div class="border-b-1 border-gray-200 p-2 flex items-center  justify-between">
                     <div class="flex items-center">
-                    <div class="mr-4">
-                        <input type="checkbox" id="checkbox{{ $word['id'] }}" onchange="updateCount()" class="custom-checkbox" style="width: 18px; height: 18px; cursor: pointer;" name="word" value="{{ $word['id'] }}">
-                    </div>
-                    <label for="checkbox{{ $word['id'] }}" class="flex items-center cursor-pointer">
+{{--                    <div class="mr-4">--}}
+{{--                        <input type="checkbox" id="checkbox{{ $word['id'] }}" onchange="updateCount()" class="custom-checkbox" style="width: 18px; height: 18px; cursor: pointer;" name="word" value="{{ $word['id'] }}">--}}
+{{--                    </div>--}}
+{{--                    <label for="checkbox{{ $word['id'] }}" class="flex items-center cursor-pointer">--}}
                     <div class="cursor-pointer hover:bg-sky-100 p-1 rounded-sm">
                         <span class="font-semibold text-sky-800">{{ $word['word'] }}</span> —
                         <span>{{ $word['description'] }}</span>
