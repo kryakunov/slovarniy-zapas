@@ -25,7 +25,16 @@
                 <div class="m-3 w-200">
                     <textarea name="description" rows=2 class="bg-white w-200 p-4 border border-gray-100 rounded">{{ $word['description'] }}</textarea>
                 </div>
+                <div class="m-3">
+                    <input type="file"  name="image" accept="image/png, image/jpeg"/>
+                </div>
+                @if(isset($word['image']))
+                <div>
+                    <img src="{{ asset('storage/images/' . $word['image']) }}" alt="{{ $word['image'] }}">
+                </div>
+                @endif
             </div>
+
 
             <div class="m-3 w-100">
                 <input type="submit" value="Сохранить" class="items-center bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded cursor-pointer">

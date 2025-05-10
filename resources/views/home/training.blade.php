@@ -26,7 +26,7 @@
 
         <div class="grid grid-cols-3 gap-5 mt-10">
 
-            <div onclick="window.location.href = '{{ route('training-repeat') }}'" class="@if ($repeatWords == 0) non-clickable @endif bg-emerald-200 flex items-center  shadow-md rounded-lg p-4 col-span-1 hover:bg-emerald-300 cursor-pointer">
+            <div onclick="window.location.href = '{{ route('training-repeat') }}'" class="@if ($repeatWords == 0) non-clickable @endif bg-emerald-500 text-white flex items-center  shadow-md rounded-lg p-4 col-span-1 hover:bg-emerald-400 cursor-pointer">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#E74C3C"/><path fill="none" stroke="#F0C419" stroke-dasharray="216 0" stroke-dashoffset="43" stroke-linecap="square" stroke-miterlimit="10" stroke-width="8" d="M12.5 50.5c0 10 7 17 17 17c17 0 26-34 43-34c10 0 18 7 18 17s-8 17-18 17c-17 0-26-34-43-34c-10 0-17 7-17 17z"/><path d="m45.938 50.5l5.047 6.516s-2.141 2.797-3.5 4.25c0 0-3.621-3.552-5.746-5.583c1.308-1.402 4.199-5.183 4.199-5.183z" opacity=".15"/></svg>
                 </div>
@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            <div onclick="window.location.href = '{{ route('training-description-word') }}'" class="@if ($repeatWords == 0) non-clickable @endif bg-indigo-200 shadow-md rounded-lg p-4 col-span-1 hover:bg-indigo-300 cursor-pointer flex items-center">
+            <div onclick="window.location.href = '{{ route('training-description-word') }}'" class="@if ($repeatWords == 0) non-clickable @endif bg-indigo-500 shadow-md  text-white rounded-lg p-4 col-span-1 hover:bg-indigo-400 cursor-pointer flex items-center">
                 <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 512 512"><path fill="#EAC083" d="M446.067 512h-217.97c-2.818 0-5.102-3.663-5.102-8.182V8.182c0-4.519 2.284-8.182 5.102-8.182H446.23c2.727 0 4.938 3.546 4.938 7.92v495.898c.001 4.519-2.283 8.182-5.101 8.182z"/><path fill="#F9E7C0" d="M392.753 512H191.967L35.007 355.04V8.182A8.182 8.182 0 0 1 43.189 0h349.826a7.92 7.92 0 0 1 7.92 7.92v495.898a8.182 8.182 0 0 1-8.182 8.182z"/><path fill="#597B91" d="M303.694 456.668h-60.108c-6.147 0-11.13-4.983-11.13-11.13s4.983-11.13 11.13-11.13h60.108c6.146 0 11.13 4.983 11.13 11.13s-4.983 11.13-11.13 11.13zm59.646-83.983c0-6.146-4.983-11.13-11.13-11.13H243.586c-6.147 0-11.13 4.983-11.13 11.13s4.983 11.13 11.13 11.13H352.21c6.146-.001 11.13-4.984 11.13-11.13zm-23.867-72.854c0-6.146-4.983-11.13-11.13-11.13h-84.757c-6.147 0-11.13 4.983-11.13 11.13s4.983 11.13 11.13 11.13h84.757c6.146 0 11.13-4.983 11.13-11.13zm-49.297-72.853c0-6.147-4.983-11.13-11.13-11.13H102.809c-6.147 0-11.13 4.983-11.13 11.13s4.983 11.13 11.13 11.13h176.237c6.146-.001 11.13-4.983 11.13-11.13zm-92.007 72.853c0-6.146-4.983-11.13-11.13-11.13h-84.231c-6.147 0-11.13 4.983-11.13 11.13s4.983 11.13 11.13 11.13h84.231c6.148 0 11.13-4.983 11.13-11.13zm110.859-145.707c0-6.147-4.983-11.13-11.13-11.13h-195.09c-6.147 0-11.13 4.983-11.13 11.13s4.983 11.13 11.13 11.13h195.09c6.147 0 11.13-4.983 11.13-11.13zm54.312-72.853c0-6.147-4.983-11.13-11.13-11.13H102.809c-6.147 0-11.13 4.983-11.13 11.13s4.983 11.13 11.13 11.13H352.21c6.146 0 11.13-4.983 11.13-11.13z"/><path fill="#EAC083" d="M191.967 512L35.007 355.04h123.597c18.426 0 33.363 14.937 33.363 33.363V512z"/></svg>
                 </div>
@@ -47,7 +47,7 @@
             </div>
 
 
-            <div onclick="window.location.href = '{{ route('training-sentence') }}'" class="non-clickable bg-green-700 text-white shadow-md rounded-lg p-4 col-span-1 hover:bg-blue-100 cursor-pointer flex items-center">
+            <div onclick="window.location.href = '{{ route('training-sentence') }}'" class="non-clickable bg-green-700 text-white shadow-md rounded-lg p-4 col-span-1 hover:bg-blue-500 cursor-pointer flex items-center">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#2C3E50"/><path fill="none" d="M16.488 73.027L70.906 18.61c1.172-1.172 4.021-.222 6.364 2.121s3.293 5.193 2.121 6.364L24.973 81.513l-8.485-8.486z" clip-rule="evenodd"/><path fill="#ECF0F1" fill-rule="evenodd" d="M64.906 29.609L12.018 82.497a50.269 50.269 0 0 0 8.847 8.124l52.527-52.527c1.172-1.171.222-4.021-2.121-6.364c-2.344-2.342-5.194-3.292-6.365-2.121z" clip-rule="evenodd"/><path fill="#F0C419" d="M88.5 23.002c.767-6.901 4.6-10.735 11.5-11.501c-6.9-.767-10.734-4.6-11.5-11.5c-.767 6.9-4.6 10.734-11.5 11.5c6.899.766 10.733 4.6 11.5 11.501zM31.5 0c-.5 4.5-3 7-7.501 7.501c4.5.5 7.001 3 7.501 7.5c.5-4.5 3-7 7.501-7.5C34.5 7 32 4.5 31.5 0zm60 46.001c-.5 4.5-3 7-7.501 7.501c4.5.5 7.001 3 7.501 7.5c.5-4.5 3-7 7.501-7.5C94.5 53.001 92 50.5 91.5 46.001z"/><path fill="#fff" d="M71.5 53c-.367 3.299-2.2 5.133-5.5 5.5c3.3.366 5.134 2.2 5.5 5.499c.367-3.299 2.2-5.133 5.5-5.499c-3.3-.367-5.134-2.202-5.5-5.5zm-25-31.001c-.367 3.3-2.2 5.134-5.5 5.501c3.3.367 5.134 2.199 5.5 5.5c.367-3.301 2.2-5.133 5.5-5.5c-3.3-.367-5.134-2.201-5.5-5.501zM58.5 3c-.367 3.298-2.2 5.133-5.5 5.5c3.3.366 5.134 2.2 5.5 5.499c.366-3.299 2.2-5.133 5.5-5.499c-3.3-.367-5.134-2.202-5.5-5.5z"/></svg>
                 </div>

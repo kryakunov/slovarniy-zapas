@@ -80,9 +80,21 @@ class AdminController extends Controller
 
     public function updateWord($id, Request $request)
     {
-        $word = Word::find($id);
 
-        $word->update($request->all());
+        $word = Word::find($id);
+        $path = null;
+
+        // Загрузка изображения
+        if ($request->file('image')) {
+            $filename = $word->id . '.' . $request->file('image')->getClientOriginalExtension();
+            $path = $request->file('image')->storeAs('images', $filename, 'public');
+        }
+
+        $word->update([
+            'word' => $request->word,
+            'description' => $request->description,
+            'image' => $filename,
+        ]);
 
         return redirect()->route('admin.edit-words', $word->word_list_id);
     }
@@ -108,6 +120,10 @@ class AdminController extends Controller
         $wordDTO = $request->toDTO();
 
         $this->wordService->register($wordDTO, $id);
+
+        $count = Word::where('word_list_id', $id)->count();
+        $wordList = WordList::where('id', $id)->first();
+        $wordList->update(['count' => $count]);
 
         return redirect()->route('admin.edit-words', $id);
     }

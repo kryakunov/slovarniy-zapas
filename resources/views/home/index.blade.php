@@ -91,7 +91,11 @@
 
                                     <div class="mb-1 text-base font-medium text-sm">Изучено {{ $list['done'] }} из {{ $list['count'] }}</div>
                                     <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
-                                        <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: {{ $list['done'] / $list['count'] * 100 }}%"></div>
+                                        @if ($list['count'] > 0)
+                                            <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: {{ $list['done'] / $list['count'] * 100 }}%"></div>
+                                        @else
+                                            <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 0%"></div>
+                                        @endif
                                     </div>
 
                                     <div class="font-semibold">{{ $list->type?->title }}</div>
