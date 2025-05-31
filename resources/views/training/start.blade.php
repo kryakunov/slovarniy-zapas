@@ -2,6 +2,7 @@
 
 @section('content')
 
+    <div id="image" class=""></div>
     <div id="word" class="mt-20 text-sky-600 font-semibold text-2xl">Слово</div>
     <div id="description" class="text-sm mt-5 ml-50 mb-5 mr-50">Описание</div>
 
@@ -59,6 +60,7 @@
     let word = '';
     let description = '';
     let wordId = 0;
+    let image = '';
 
     const wordDescription = document.getElementById('wordDescription');
     const inputField = document.getElementById('word-input');
@@ -79,8 +81,7 @@
                     word = data.word;
                     description = data.description
                     wordId = data.word_id
-
-
+                    image = data.image
 
                     showNewWord();
 
@@ -105,6 +106,13 @@
         const descriptionDev = document.getElementById('description');
         wordDiv.textContent = word;
         descriptionDev.textContent = description;
+
+        const imageUrl = "{{ asset('storage/images') }}/" + image;
+        const container = document.getElementById('image');
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = word;
+        container.appendChild(img);
     }
 
     function buttonNextWordDisabledFalse()
