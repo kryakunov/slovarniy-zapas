@@ -110,6 +110,7 @@
         const imageUrl = "{{ asset('storage/images') }}/" + image;
         const container = document.getElementById('image');
         const img = document.createElement('img');
+        container.innerHTML = '';
         img.src = imageUrl;
         img.alt = word;
         container.appendChild(img);
