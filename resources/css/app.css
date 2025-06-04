@@ -45,9 +45,16 @@
         @apply p-5 pl-10 pr-10 focus:outline-none text-white bg-red-400 font-medium
         rounded-4xl mt-10 text-sm cursor-pointer;
     }
+
+    .word-list-description {
+        font-size: 3vw;
+    }
+    .word-list-stat {
+        font-size: 2.5vw;
+    }
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1023px) {
     .h2_title{
         @apply text-6xl font-bold p-4 mt-10;
     }
@@ -64,6 +71,15 @@
         @apply p-5 pl-10 pr-10 focus:outline-none text-white bg-red-400 font-medium
         rounded-4xl mt-10 text-2xl cursor-pointer;
     }
+
+    .word-list-description {
+        font-size: 3vw;
+    }
+
+    .word-list-stat {
+        font-size: 2.5vw;
+    }
+
 }
 
 @media (min-width: 1024px) {
@@ -83,11 +99,25 @@
         @apply p-5 pl-10 pr-10 focus:outline-none text-white bg-red-400 font-medium
         rounded-4xl mt-10 text-2xl cursor-pointer;
     }
+    .image-container {
+        height: 200px;
+    }
 }
 
+.image-container {
+    width: 300px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
 
 .content {
-
     margin: auto;
     padding: 30px;
     width: 100%;

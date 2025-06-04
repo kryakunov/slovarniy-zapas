@@ -2,8 +2,8 @@
 
 @section('content')
 
-    <div id="image" class=""></div>
-    <div id="word" class="mt-20 text-sky-600 font-semibold text-2xl">Слово</div>
+    <div id="image" class="image-container"></div>
+    <div id="word" class="mt-5 text-sky-600 font-semibold text-2xl">Слово</div>
     <div id="description" class="text-sm mt-5 ml-50 mb-5 mr-50">Описание</div>
 
     <button id="buttonNextWord"  onclick="sendDoneWord()"  class="ml-3 mr-2 cursor-pointer mt-3 py-3 px-6 text-white text-lg rounded">

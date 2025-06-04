@@ -168,7 +168,7 @@
         $(".multiple-items").slick({
             dots: false,
             infinite: true,
-            speed: 500,
+            speed: 700,
             autoplay: true,
             slidesToShow: 3,
             slidesToScroll: 1,
