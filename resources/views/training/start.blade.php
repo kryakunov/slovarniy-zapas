@@ -111,10 +111,8 @@
 
         if (image === null) {
             imageUrl = '/no-image.png';
-            console.log(imageUrl)
         } else {
             imageUrl = "{{ asset('storage/images') }}/" + image;
-            alert('df')
         }
 
         console.log('--d')
