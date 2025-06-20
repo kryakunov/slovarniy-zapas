@@ -93,7 +93,7 @@
         max-width: 1000px;
     }
     .logo {
-        @apply w-76;
+        @apply w-16;
     }
     .main_btn {
         @apply p-5 pl-10 pr-10 focus:outline-none text-white bg-red-400 font-medium

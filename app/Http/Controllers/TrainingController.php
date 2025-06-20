@@ -308,7 +308,7 @@ class TrainingController extends Controller
         $word = $res['word']['word'];
         $description = $res['word']['description'];
 
-        $words = Word::select('word')->inRandomOrder()->take(5)->get()->toArray();
+        $words = Word::select('word')->inRandomOrder()->take(3)->get()->toArray();
         $words[] = ['word' => $word];
         shuffle($words);
 

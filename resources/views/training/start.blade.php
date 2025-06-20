@@ -81,6 +81,7 @@
                     word = data.word;
                     description = data.description
                     wordId = data.word_id
+
                     image = data.image
 
                     showNewWord();
@@ -102,12 +103,23 @@
 
     function showNewWord()
     {
+        let imageUrl = '';
         const wordDiv = document.getElementById('word');
         const descriptionDev = document.getElementById('description');
         wordDiv.textContent = word;
         descriptionDev.textContent = description;
 
-        const imageUrl = "{{ asset('storage/images') }}/" + image;
+        if (image === null) {
+            imageUrl = '/no-image.png';
+            console.log(imageUrl)
+        } else {
+            imageUrl = "{{ asset('storage/images') }}/" + image;
+            alert('df')
+        }
+
+        console.log('--d')
+        console.log(imageUrl)
+
         const container = document.getElementById('image');
         const img = document.createElement('img');
         container.innerHTML = '';

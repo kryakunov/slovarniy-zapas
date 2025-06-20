@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         @vite('resources/css/app.css')
-        <title>Laravel</title>
+        <title>Словарный запас</title>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -29,11 +29,19 @@
     <div class="w-full space-y-0 m-0">
         <div class=" main text-white h-screen text-left pl-40 pr-40 bg-[#339dc8]">
             <div class="flex items-center justify-between pt-10">
-                <div>
+                <div class="flex items-center">
+                    <div>
                     <img
                         src="/logo.png"
                         class="logo"
                     />
+                    </div>
+                    <div>
+                        <img
+                            src="/logo-text.png"
+                            class="w-66 ml-4"
+                        />
+                    </div>
                 </div>
                 <div class="login">
                     <a class="m-2  hover:text-white hover:underline decoration-red-400 underline-offset-10" href="{{ route('login') }}">Войти</a>
