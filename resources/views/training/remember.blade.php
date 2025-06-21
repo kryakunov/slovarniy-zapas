@@ -66,7 +66,11 @@
             document.body.classList.add('fade-in');
             inputField.value = '';
             inputField.style.borderColor = 'green'
-            doneWord();
+
+            setTimeout(() => {
+                doneWord();
+            }, 1000);
+
         } else {
             document.body.classList.add('fade-out');
             resultElement.style.color = 'red';

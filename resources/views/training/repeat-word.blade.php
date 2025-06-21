@@ -258,10 +258,16 @@
         // проверяем, совпадают ли слова
         if (word.toLowerCase() == wordClick.toLowerCase()) {
             greenAnimate();
-            sendDoneWord();
+
+            setTimeout(() => {
+                sendDoneWord();
+            }, 1000);
         } else {
             redAnimate();
-            sendErrorWord();
+
+            setTimeout(() => {
+                sendErrorWord();
+            }, 1000);
         }
     }
 
