@@ -26,6 +26,10 @@
                     <textarea name="description" rows=2 class="bg-white w-200 p-4 border border-gray-100 rounded">{{ $word['description'] }}</textarea>
                 </div>
                 <div class="m-3">
+                    <input type="checkbox" {{ $word['hide_image'] ? 'checked' : '' }} name="hide_image" value="1" id="hide_image"> <label for="hide_image">Скрыть изображение</label>
+                </div>
+
+                <div class="m-3">
                     <input type="file"  name="image" accept="image/png, image/jpeg"/>
                 </div>
                 @if(isset($word['image']))

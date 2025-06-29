@@ -40,11 +40,11 @@
                     <div>
                         <img
                             src="/logo-text.png"
-                            class="w-66 ml-4"
+                            class="w-66 ml-4 logo-text pr-10"
                         />
                     </div>
                 </div>
-                <div class="login">
+                <div class="login for-desktop">
                     <a class="m-2  hover:text-white hover:underline decoration-red-400 underline-offset-10" href="{{ route('login') }}">Войти</a>
                     <a class="m-2  hover:text-white hover:underline decoration-red-400 underline-offset-10" href="{{ route('register') }}">Зарегистрироваться</a>
                 </div>

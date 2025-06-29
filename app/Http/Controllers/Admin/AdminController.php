@@ -93,7 +93,8 @@ class AdminController extends Controller
         $word->update([
             'word' => $request->word,
             'description' => $request->description,
-            'image' => $filename,
+            'image' => $filename ?? null,
+            'hide_image' => $request->hide_image ?? 0,
         ]);
 
         return redirect()->route('admin.edit-words', $word->word_list_id);

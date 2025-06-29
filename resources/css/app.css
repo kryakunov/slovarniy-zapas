@@ -30,7 +30,19 @@
     }
 
     .logo {
-        @apply w-46;
+        @apply w-26;
+    }
+
+    @media (max-width: 1024px) {
+        .for-desktop {
+            display: none !important;
+        }
+    }
+
+    @media (min-width: 1025px) {
+        .for-mobile {
+            display: none !important;
+        }
     }
 
     .h2_title{
