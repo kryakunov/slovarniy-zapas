@@ -18,6 +18,9 @@
             <thead>
             <tr>
                 <th class="text-left p-2 bg-gray-100">Слово</th>
+                <th class="text-left p-2 bg-gray-100">Ударение</th>
+                <th class="text-left p-2 bg-gray-100">Изображение</th>
+                <th class="text-left p-2 bg-gray-100">Скрыто</th>
                 <th class="text-left p-2 bg-gray-100">Описание</th>
                 <th class="text-left p-2 bg-gray-100">Лайков</th>
                 <th class="text-left p-2 bg-gray-100">Действия</th>
@@ -26,7 +29,10 @@
             <tbody>
             @foreach($words as $word)
             <tr>
-                <td class="p-2 text-sm">{{ $word['word'] }}</td>
+                <td class="p-2 text-sm font-semibold text-sky-800">{{ $word['word'] }}</td>
+                <td class="p-2 text-sm">{{ $word['stress'] ? '' : 'no' }}</td>
+                <td class="p-2 text-sm">{{ $word['image'] ? '' : 'no' }}</td>
+                <td class="p-2 text-sm">{{ $word['hide_image'] ? 'yes' : '' }}</td>
                 <td class="p-2 text-sm">{{ $word['description'] }}</td>
                 <td class="p-2 text-sm">{{ $word['likes'] }}</td>
                 <td class="p-2 text-sm">

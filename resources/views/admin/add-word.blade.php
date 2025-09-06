@@ -17,8 +17,16 @@
                 <input type="text" name="word"  class="bg-white w-100 p-4 border border-gray-100 rounded">
             </div>
             <div class="m-3 w-100">
+                Слово с ударением
+                <input type="text" name="stress"  class="bg-white w-100 p-4 border border-gray-100 rounded">
+            </div>
+            <div class="m-3 w-100">
                 Описание
                 <textarea name="description" rows=5 class="bg-white w-100 p-4 border border-gray-100 rounded"></textarea>
+            </div>
+            <div class="m-3 w-100">
+                Пример предложения со словом
+                <textarea name="sentence" rows=5 class="bg-white w-100 p-4 border border-gray-100 rounded"></textarea>
             </div>
 
             <div class="m-3 w-200">

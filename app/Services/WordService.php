@@ -18,7 +18,9 @@ class WordService
     {
         $this->wordRepository->create([
             'word' => $data->word,
+            'stress' => $data->word,
             'description' => $data->description,
+            'sentence' => $data->sentence,
             'word_list_id' => $id,
         ]);
     }

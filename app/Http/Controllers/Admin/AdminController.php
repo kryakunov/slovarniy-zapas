@@ -74,7 +74,9 @@ class AdminController extends Controller
 
     public function editWord(Word $word)
     {
-        return view('admin.edit-word', compact('word'));
+        $wordLists = WordList::all()->toArray();
+
+        return view('admin.edit-word', compact('word', 'wordLists'));
     }
 
 
@@ -90,14 +92,19 @@ class AdminController extends Controller
             $path = $request->file('image')->storeAs('images', $filename, 'public');
         }
 
+        $currentWordList = $word->word_list_id;
+
         $word->update([
             'word' => $request->word,
+            'stress' => $request->stress ?? $request['word'],
             'description' => $request->description,
+            'sentence' => $request->sentence ?? null,
             'image' => $filename ?? null,
+            'word_list_id' => $request->word_list ?? null,
             'hide_image' => $request->hide_image ?? 0,
         ]);
 
-        return redirect()->route('admin.edit-words', $word->word_list_id);
+        return redirect()->route('admin.edit-words', $currentWordList);
     }
 
     public function deleteWord($id)

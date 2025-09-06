@@ -25,7 +25,9 @@ class WordStoreRequest extends FormRequest
     {
         return [
             'word' => 'required|string',
+            'stress' => '',
             'description' => 'required|string',
+            'sentence' => '',
         ];
     }
 

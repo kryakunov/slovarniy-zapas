@@ -9,7 +9,9 @@ class WordStoreDTO
     public function __construct
     (
         public readonly string $word,
+        public readonly string $stress,
         public readonly string $description,
+        public readonly string $sentence,
     )
     {
     }
@@ -18,7 +20,9 @@ class WordStoreDTO
     {
         return new self(
             word: $data['word'],
+            stress: $data['stress'],
             description: $data['description'],
+            sentence: $data['sentence'],
         );
     }
 }

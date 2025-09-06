@@ -236,6 +236,7 @@ class TrainingController extends Controller
 
         $wordId = $res['word']['id'];
         $word = $res['word']['word'];
+        $wordWithStress = $res['word']['stress'] ? $res['word']['stress'] : $res['word']['word'] ;
         $description = $res['word']['description'];
 
         // Просим ИИ сгенерировать предложение с этим словом
@@ -244,6 +245,7 @@ class TrainingController extends Controller
         return response()->json([
             'status' => 'success',
             'word' => $word,
+            'word_with_stress' => $wordWithStress,
             'word_id' => $wordId,
             'description' => $description,
         ]);
@@ -265,7 +267,7 @@ class TrainingController extends Controller
         }
 
         $wordId = $res['word']['id'];
-        $word = $res['word']['word'];
+        $word = $res['word']['stress'] ? $res['word']['stress'] : $res['word']['word'] ;
         $description = $res['word']['description'];
         $image = $res['word']['image'];
 
@@ -305,7 +307,7 @@ class TrainingController extends Controller
         }
 
         $wordId = $res['word']['id'];
-        $word = $res['word']['word'];
+        $word = $res['word']['stress'] ? $res['word']['stress'] : $res['word']['word'] ;
         $description = $res['word']['description'];
 
         $words = Word::select('word')->inRandomOrder()->take(3)->get()->toArray();

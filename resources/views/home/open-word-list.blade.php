@@ -44,7 +44,7 @@
 {{--                    </div>--}}
 {{--                    <label for="checkbox{{ $word['id'] }}" class="flex items-center cursor-pointer">--}}
                     <div class="cursor-pointer hover:bg-sky-100 p-1 rounded-sm">
-                        <span class="font-semibold text-sky-800">{{ $word['word'] }}</span> —
+                        <span class="font-semibold text-sky-800">{{ ($word['stress'] == '') ? $word['word'] : $word['stress'] }}</span> —
                         <span>{{ $word['description'] }}</span>
                     </div>
                     </label>

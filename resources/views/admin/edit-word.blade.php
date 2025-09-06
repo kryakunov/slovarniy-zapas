@@ -20,14 +20,33 @@
 
             <div class="border-b border-b-gray-300">
                 <div class="m-3 w-100">
+                    Слово:
                     <input type="text" name="word" value="{{ $word['word'] }}" class="bg-white w-100 p-4 border border-gray-100 rounded">
                 </div>
+                <div class="m-3 w-100">
+                   Слово с ударением: <input type="text" name="stress" value="{{ $word['stress'] }}" class="bg-white w-100 p-4 border border-gray-100 rounded">
+                </div>
+                Описание:
                 <div class="m-3 w-200">
                     <textarea name="description" rows=2 class="bg-white w-200 p-4 border border-gray-100 rounded">{{ $word['description'] }}</textarea>
+                </div>
+                Пример предложения со словом:
+                <div class="m-3 w-200">
+                    <textarea name="sentence" rows=2 class="bg-white w-200 p-4 border border-gray-100 rounded">{{ $word['sentence'] }}</textarea>
                 </div>
                 <div class="m-3">
                     <input type="checkbox" {{ $word['hide_image'] ? 'checked' : '' }} name="hide_image" value="1" id="hide_image"> <label for="hide_image">Скрыть изображение</label>
                 </div>
+
+                <select name="word_list" class="cursor-pointer bg-gray-50 border border-gray-300
+                text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                block w-50 my-5 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+                ">
+                    @foreach($wordLists as $wl)
+                        <option value="{{ $wl['id'] }}" @if ($word['word_list_id'] == $wl['id']) selected="selected" @endif>{{ $wl['title'] }}</option>
+                    @endforeach
+                </select>
 
                 <div class="m-3">
                     <input type="file"  name="image" accept="image/png, image/jpeg"/>
