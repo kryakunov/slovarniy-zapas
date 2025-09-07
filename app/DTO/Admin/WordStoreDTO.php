@@ -9,7 +9,7 @@ class WordStoreDTO
     public function __construct
     (
         public readonly string $word,
-        public readonly string $stress,
+        public readonly string|null $stress,
         public readonly string $description,
         public readonly string $sentence,
     )
