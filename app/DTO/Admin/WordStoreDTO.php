@@ -20,7 +20,7 @@ class WordStoreDTO
     {
         return new self(
             word: $data['word'],
-            stress: $data['stress'],
+            stress: $data['stress'] ?? null,
             description: $data['description'],
             sentence: $data['sentence'],
         );
