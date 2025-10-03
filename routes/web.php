@@ -9,7 +9,7 @@ use App\Http\Controllers\RegController;
 use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/register-with-captcha', [RegController::class])->name('register-with-captcha');
+Route::post('/register-with-captcha', RegController::class)->name('register-with-captcha');
 Route::get('/', [MainController::class, 'index']);
 Route::get('/about', [MainController::class, 'about']);
 Route::get('/go', [GigaChatController::class, 'index'])->name('go');
