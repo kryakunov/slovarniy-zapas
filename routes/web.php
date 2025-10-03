@@ -21,6 +21,7 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth', 'prefix' => 'home'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/register-test', [HomeController::class, 'register'])->name('register-test');
     Route::get('/lists', [HomeController::class, 'lists'])->name('lists');
     Route::get('/training', [HomeController::class, 'training'])->name('training');
     Route::get('/training-start', [TrainingController::class, 'start'])->name('training-start');

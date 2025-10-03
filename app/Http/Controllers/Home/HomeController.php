@@ -20,6 +20,47 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    public function register()
+    {
+
+        function check_captcha($token) {
+
+            $captchaServerKey = env('CAPTCHA_SERVER_KEY');
+
+            $ch = curl_init("https://smartcaptcha.yandexcloud.net/validate");
+            $args = [
+                "secret" => $captchaServerKey,
+                "token" => $token,
+                "ip" =>  $_SERVER['REMOTE_ADDR'], // Нужно передать IP-адрес пользователя.
+                // Способ получения IP-адреса пользователя зависит от вашего прокси.
+            ];
+            curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($args));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            $server_output = curl_exec($ch);
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($httpcode !== 200) {
+                echo "Allow access due to an error: code=$httpcode; message=$server_output\n";
+                return true;
+            }
+
+            $resp = json_decode($server_output);
+            return $resp->status === "ok";
+        }
+
+        $token = "<токен>"; //Например, $_POST['smart-token'];
+        if (check_captcha($token)) {
+            echo "Passed\n";
+        } else {
+            echo "Robot\n";
+        }
+
+    }
+
     /**
      * Show the application dashboard.
      *

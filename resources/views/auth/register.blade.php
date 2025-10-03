@@ -6,9 +6,10 @@
             <div class="w-full max-w-md">
                 <div class="bg-gray-200 shadow-md  mt-20 rounded-lg p-6">
                     <h2 class="text-lg font-semibold text-gray-700 text-center">{{ __('Регистрация') }}</h2>
+                    <script src="https://smartcaptcha.yandexcloud.net/captcha.js" defer></script>
 
                     <div class="mt-4">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('register-test') }}">
                             @csrf
 
                             <div class="mb-4">
@@ -42,6 +43,14 @@
                                 <label for="password-confirm" class="block text-gray-700 text-sm font-bold mb-2">{{ __('Повторите пароль') }}</label>
                                 <input id="password-confirm" type="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="password_confirmation" required autocomplete="new-password">
                             </div>
+
+                            <div
+                                id="captcha-container"
+                                style="height: 100px"
+                                class="smart-captcha mb-4"
+                                data-sitekey="ysc1_CkEhpgK2RFh9W0ljOGDED47hOkwH61E1b8u3WQUcba589c49"
+                            ></div>
+
 
                             <div class="flex items-center justify-between">
                                 <button type="submit" class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
