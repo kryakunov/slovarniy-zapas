@@ -9,7 +9,7 @@
                     <script src="https://smartcaptcha.yandexcloud.net/captcha.js" defer></script>
 
                     <div class="mt-4">
-                        <form method="POST" action="{{ route('register-test') }}">
+                        <form method="POST" action="{{ route('register-with-captcha') }}">
                             @csrf
 
 

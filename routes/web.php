@@ -5,10 +5,11 @@ use App\Http\Controllers\GigaChatController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\WordListController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\RegisterController as RegController;
 use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Route;
 
-Route::any('/register-test', [HomeController::class, 'register'])->name('register-test');
+Route::post('/register-with-captcha', [RegController::class])->name('register-with-captcha');
 Route::get('/', [MainController::class, 'index']);
 Route::get('/about', [MainController::class, 'about']);
 Route::get('/go', [GigaChatController::class, 'index'])->name('go');
