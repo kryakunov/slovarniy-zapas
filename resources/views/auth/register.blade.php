@@ -12,9 +12,6 @@
                         <form method="POST" action="{{ route('register-test') }}">
                             @csrf
 
-                            <div id="captcha-container" class="smart-captcha">
-                                <input type="hidden" name="smart-token" value="">
-                            </div>
 
                             <div class="mb-4">
                                 <label for="name" class="block text-gray-700 text-sm font-bold mb-2">{{ __('Имя') }}</label>
@@ -53,7 +50,8 @@
                                 style="height: 100px"
                                 class="smart-captcha mb-4"
                                 data-sitekey="ysc1_CkEhpgK2RFh9W0ljOGDED47hOkwH61E1b8u3WQUcba589c49"
-                            ></div>
+                            >
+                            </div>
 
 
                             <div class="flex items-center justify-between">
