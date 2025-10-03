@@ -7,9 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class RegisterController extends Controller
+class RegController extends Controller
 {
-    public function __invoke()
+    public function __invoke(RegisterRequest $request)
     {
 
         $token = $_POST['smart-token'];

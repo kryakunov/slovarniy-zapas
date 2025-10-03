@@ -5,7 +5,7 @@ use App\Http\Controllers\GigaChatController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\WordListController;
 use App\Http\Controllers\MainController;
-use App\Http\Controllers\RegisterController as RegController;
+use App\Http\Controllers\RegController;
 use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Route;
 
