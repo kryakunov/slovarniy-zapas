@@ -8,6 +8,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Route;
 
+Route::any('/register-test', [HomeController::class, 'register'])->name('register-test');
 Route::get('/', [MainController::class, 'index']);
 Route::get('/about', [MainController::class, 'about']);
 Route::get('/go', [GigaChatController::class, 'index'])->name('go');
@@ -21,7 +22,6 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth', 'prefix' => 'home'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::any('/register-test', [HomeController::class, 'register'])->name('register-test');
     Route::get('/lists', [HomeController::class, 'lists'])->name('lists');
     Route::get('/training', [HomeController::class, 'training'])->name('training');
     Route::get('/training-start', [TrainingController::class, 'start'])->name('training-start');
