@@ -52,11 +52,11 @@ class HomeController extends Controller
             return $resp->status === "ok";
         }
 
-        $token = "<токен>"; //Например, $_POST['smart-token'];
+        $token = $_POST['smart-token'];
         if (check_captcha($token)) {
-            echo "Passed\n";
+            dd('Passed');
         } else {
-            echo "Robot\n";
+            dd('Robot');
         }
 
     }
