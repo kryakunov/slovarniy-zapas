@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class TgUser extends Model
 {
-    //
+    protected $guarded = [];
 }

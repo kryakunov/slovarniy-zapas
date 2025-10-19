@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tg_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->nullable()->unique();
+            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->string('tg_name');
             $table->string('tg_id');
             $table->string('tg_login');
