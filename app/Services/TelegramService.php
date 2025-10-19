@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\TgUser;
 use App\Models\TgUsers;
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
 class TelegramService
@@ -33,7 +34,6 @@ class TelegramService
 
             if ($text == '/start') {
 
-
                 $tgUser = TgUser::updateOrCreate(
                     [
                         'chat_id' => $chatId,
@@ -45,8 +45,11 @@ class TelegramService
                     ]
                 );
 
+                if ($tgUser->wasRecentlyCreated) {
+                    $this->sendMessage($chatId, 'Привет, ' . $userName . '! Бот запущен. Скоро вам будут приходить слова');
+                }
 
-                $this->sendMessage($chatId, 'Привет, ' . $userName . '! Бот запущен');
+                $this->sendMessage($chatId, 'Привет, ' . $userName . '! Вы уже используете этого бота');
             }
 
         } catch (\Exception $e) {

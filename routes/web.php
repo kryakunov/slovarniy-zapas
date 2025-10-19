@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CronController;
 use App\Http\Controllers\GigaChatController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\WordListController;
@@ -13,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 // Telegram Bot
 Route::post('/bot', TelegramController::class)->withoutMiddleware(['web', 'csrf'])->name('bot');
 Route::get('/set-webhook', [TelegramController::class, 'setWebhook']);
-//Route::get('/check', CronController::class)->name('check');
+
+// Рассылка слов по тг пользователям
+Route::get('/check', [CronController::class, 'responder'])->name('check');
 
 Route::post('/register-with-captcha', RegController::class)->name('register-with-captcha');
 Route::get('/', [MainController::class, 'index']);
