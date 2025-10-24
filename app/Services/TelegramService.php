@@ -72,6 +72,30 @@ class TelegramService
         return true;
     }
 
+    public function sendPhoto($chatId, $message, $image): bool
+    {
+        $botToken = env('TELEGRAM_TOKEN');
+        $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendPhoto";
+
+        try {
+
+            $response = Http::attach(
+                'photo',
+                fopen($image, 'r')
+            )->post($botApiUrl, [
+                'chat_id' => $chatId,
+                'caption' => $message,
+                'parse_mode' => 'HTML'
+            ]);
+
+
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+
+        return true;
+    }
+
     public function error(): void
     {
         http_response_code(200);
