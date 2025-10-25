@@ -15,9 +15,10 @@ class TelegramService
 
     public function handleCallback($callback)
     {
-        $btn = $callback['callback_query']['data'];
-        $chatId = $callback['callback_query']['message']['chat']['id'];
-        $messageId = $callback['callback_query']['message']['message_id'];
+        $btn = $callback['data'];
+        $chatId = $callback['message']['chat']['id'];
+        $messageId = $callback['message']['message_id'];
+
 
         // Кнопка "больше не присылать слова"
         if ($btn == 'btn1') {
