@@ -7,6 +7,7 @@ use App\Models\MyWord;
 use App\Models\MyWordList;
 use App\Models\Word;
 use App\Models\WordList;
+use App\Services\WordService;
 
 class HomeController extends Controller
 {
@@ -56,14 +57,7 @@ class HomeController extends Controller
             ->where('status', 0)
             ->count();
 
-        $repeatWords = MyWord::where('user_id', $userId)
-            ->where('status', 1)
-            ->where(function($query) {
-                $query
-                    ->where('repeated', '<', time() - 72000 / 2)
-                    ->orWhere('repeated', null);
-            })
-            ->count();
+        $repeatWords = WordService::getRepeatWords($userId);
 
         $repeatedWords = MyWord::where('user_id', $userId)
           //  ->where('status', 1)

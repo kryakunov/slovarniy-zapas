@@ -13,19 +13,22 @@ class TelegramService
     )
     {}
 
-    public function handleCallback($callback)
+    public function handleCallback($callback, $id = 'no')
     {
         $btn = $callback['data'];
         $chatId = $callback['message']['chat']['id'];
         $messageId = $callback['message']['message_id'];
 
-        file_put_contents('call.txt', json_encode($callback, JSON_PRETTY_PRINT));
 
         // Кнопка "больше не присылать слова"
         if ($btn == 'btn1') {
-            $text = "Слово {$callback['callback_query']['message']} убрано из словаря повторений";
-            file_put_contents('call2.txt', $text);
+            $text = "Слово убрано из словаря повторений";
+
+            // TODO убрать из словаря
+
             $this->sendMessage($chatId, $text);
+        } else {
+            $this->sendMessage($chatId, 'no');
         }
     }
 
@@ -33,7 +36,7 @@ class TelegramService
     {
         $chatId = $message['chat']['id'];
         $text = $message['text'] ?? '';
-       // $caption = $message['caption'] ?? 'no';
+        // $caption = $message['caption'] ?? 'no';
         $userName = $message['from']['first_name'] ?? ($message['from']['username'] ?? 'Unknown');
         $userLogin = $message['from']['username'] ?? null;
         $userId = $message['from']['id'] ?? '';
@@ -60,15 +63,33 @@ class TelegramService
                     ]
                 );
 
+                $msg = 'Привет, ' . $userName . '! Бот запущен.';
+
                 if ($tgUser->wasRecentlyCreated) {
-                    $this->sendMessage($chatId, 'Привет, ' . $userName . '! Бот запущен. Скоро вам будут приходить слова');
+                    $this->sendMessage($chatId, $msg, 'reply');
                 }
 
-                $this->sendMessage($chatId, 'Привет, ' . $userName . '! Вы уже используете этого бота');
+                $this->sendMessage($chatId, 'Привет, ' . $userName . '! Вы уже используете этого бота', 'reply');
             }
 
-            if ($text == 'Новое слово') {
-                $this->sendMessage($chatId, 'Вы запросили новое слово');
+            if ($text == '✨ Новое слово') {
+
+               // $word = WordService::getNewWord($userId);
+
+                $word = WordService::getRandomWord();
+
+                // TODO слово с ударением
+
+                $text = "<b>{$word['word']}</b> — {$word['description']}";
+
+                $this->sendMessage($chatId, $text);
+            }
+
+            if ($text == '🔁 Повторение') {
+
+                $repeatWords = WordService::getRepeatWords($userId);
+
+                $this->sendMessage($chatId, 'Вам осталось повторить {$repeatWords} слов');
             }
 
         } catch (\Exception $e) {
@@ -77,17 +98,24 @@ class TelegramService
 
     }
 
-    public function sendMessage($chatId, $message): bool
+    public function sendMessage($chatId, $message, $keyboard = false): bool
     {
         $botToken = env('TELEGRAM_TOKEN');
         $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
 
-        Http::post($botApiUrl, [
+        $data = [
             'chat_id' => $chatId,
             'text' => $message,
-            'reply_markup' => json_encode($this->getInlineKeyboard()),
             'parse_mode' => 'HTML'
-        ]);
+        ];
+
+        if ($keyboard == 'inline') {
+            $data['reply_markup'] = $this->getInlineKeyboard();
+        }elseif ($keyboard == 'reply') {
+            $data['reply_markup'] = $this->getReplyKeyboard();
+        }
+
+        Http::post($botApiUrl, $data);
 
         return true;
     }
@@ -120,8 +148,8 @@ class TelegramService
     {
         return [
             'keyboard' => [
-                [['text' => 'Новое слово'], ['text' => 'Повторение']],
-                [['text' => 'Кнопка 3']]
+                [["text" => "✨ Новое слово"], ["text" => "🔁 Повторение"]],
+                [["text" =>  "📚 Мои словари"], ["text" => "📈 Мой прогресс"]]
             ],
             'resize_keyboard' => true, // Автоматическое изменение размера
             'one_time_keyboard' => false // Клавиатура остается после нажатия
@@ -132,7 +160,7 @@ class TelegramService
     {
         return [
             'inline_keyboard' => [
-                [['text' => 'Выучил, больше не присылать', 'callback_data' => 'btn1']]
+                [['text' => '✅ Выучил, больше не присылать', 'callback_data' => 'btn1']]
             ]
         ];
     }

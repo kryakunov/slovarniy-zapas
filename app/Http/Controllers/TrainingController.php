@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MyWord;
 use App\Models\Word;
 use App\Services\GigaChatService;
+use App\Services\WordService;
 use Illuminate\Http\Request;
 
 class TrainingController extends Controller
@@ -253,10 +254,9 @@ class TrainingController extends Controller
 
     public function getStartWord()
     {
-        $res = MyWord::where('user_id', auth()->id())
-            ->where('status', self::NEW)
-            ->with('word')
-            ->first();
+        $userId = auth()->id();
+
+        $res = WordService::getNewWord($userId);
 
         if (isset($res)) {
             $res = $res->toArray();
@@ -282,21 +282,9 @@ class TrainingController extends Controller
 
     public function getRememberWord()
     {
-        $res = MyWord::where('user_id', auth()->id())
-            ->where('status', self::REPEAT)
-            ->where('repeated', '<', time() - 72000 / 2)
-            ->orWhere('repeated', '=', null)
-            ->with('word')
-            ->first();
+        $userId = auth()->id();
 
-        $res = MyWord::where('user_id', auth()->id())
-            ->where('status', self::REPEAT)
-            ->where(function($query) {
-                $query->where('repeated', '<', time() - 72000 / 2)
-                      ->orWhere('repeated', '=', null);
-            })
-            ->with('word')
-            ->first();
+        $res = WordService::getRememberWord($userId);
 
         if (isset($res)) {
             $res = $res->toArray();
@@ -321,6 +309,5 @@ class TrainingController extends Controller
             'word_id' => $wordId,
             'description' => $description,
         ]);
-
     }
 }
