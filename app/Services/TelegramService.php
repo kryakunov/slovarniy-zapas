@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\MyWord;
 use App\Models\TgUser;
 use App\Models\TgUsers;
 use App\Models\User;
@@ -19,16 +20,22 @@ class TelegramService
         $chatId = $callback['message']['chat']['id'];
         $messageId = $callback['message']['message_id'];
 
+        $btn = explode('_', $btn);
 
         // Кнопка "больше не присылать слова"
-        if ($btn == 'btn1') {
+        if ($btn[0] == 'delete') {
             $text = "Слово убрано из словаря повторений";
 
             // TODO убрать из словаря
 
             $this->sendMessage($chatId, $text);
-        } else {
-            $this->sendMessage($chatId, 'no');
+
+        } elseif ($btn[0] == 'add') { // Слова добавлено в словарь повторений
+
+          //  WordService::addWordToRepeatList($chatId, 'tg_user_id', $btn[1]);
+
+
+            $this->sendMessage($chatId, 'Слово ' . $btn[1] . ' добавлено в словарь повторений');
         }
     }
 
@@ -82,14 +89,14 @@ class TelegramService
 
                 $text = "<b>{$word['word']}</b> — {$word['description']}";
 
-                $this->sendMessage($chatId, $text);
+                $this->sendMessage($chatId, $text, 'repeat');
             }
 
             if ($text == '🔁 Повторение') {
 
-                $repeatWords = WordService::getRepeatWords($userId);
+                $repeatWords = WordService::getRememberWord($userId, 'tg_user_id');
 
-                $this->sendMessage($chatId, 'Вам осталось повторить {$repeatWords} слов');
+                $this->sendMessage($chatId, 'Вам осталось повторить {$repeatWords} слов', 'inline');
             }
 
         } catch (\Exception $e) {
@@ -113,6 +120,8 @@ class TelegramService
             $data['reply_markup'] = $this->getInlineKeyboard();
         }elseif ($keyboard == 'reply') {
             $data['reply_markup'] = $this->getReplyKeyboard();
+        }elseif ($keyboard == 'repeat') {
+            $data['reply_markup'] = $this->getRepeatKeyboard();
         }
 
         Http::post($botApiUrl, $data);
@@ -161,6 +170,15 @@ class TelegramService
         return [
             'inline_keyboard' => [
                 [['text' => '✅ Выучил, больше не присылать', 'callback_data' => 'btn1']]
+            ]
+        ];
+    }
+
+    public function getRepeatKeyboard(): array
+    {
+        return [
+            'inline_keyboard' => [
+                [['text' => '📝 Добавить в список повторения', 'callback_data' => 'btn2']]
             ]
         ];
     }

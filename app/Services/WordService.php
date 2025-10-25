@@ -25,9 +25,14 @@ class WordService
         return Word::inRandomOrder()->first();
     }
 
-    public static function getRepeatWords($userId)
+    public static function getRepeatWords($userId, string $column = 'user_id')
     {
-        $repeatWords = MyWord::where('user_id', $userId)
+        $allowedColumns = ['user_id', 'tg_user_id']; // Добавьте другие, если нужно
+        if (!in_array($column, $allowedColumns)) {
+            throw new \InvalidArgumentException("Недопустимая колонка: {$column}");
+        }
+
+        $repeatWords = MyWord::where($column, $userId)
             ->where('status', 1)
             ->where(function($query) {
                 $query
@@ -39,9 +44,14 @@ class WordService
         return $repeatWords;
     }
 
-    public static function getRememberWord($userId)
+    public static function getRememberWord($userId, string $column = 'user_id')
     {
-        $word = MyWord::where('user_id', $userId)
+        $allowedColumns = ['user_id', 'tg_user_id']; // Добавьте другие, если нужно
+        if (!in_array($column, $allowedColumns)) {
+            throw new \InvalidArgumentException("Недопустимая колонка: {$column}");
+        }
+
+        $word = MyWord::where($column, $userId)
             ->where('status', self::REPEAT)
             ->where(function($query) {
                 $query->where('repeated', '<', time() - 72000 / 2)
@@ -53,9 +63,31 @@ class WordService
         return $word;
     }
 
-    public static function getNewWord($userId)
+    public static function addWordToRepeatList($userId, string $column = 'user_id', $wordId)
     {
-        $word = MyWord::where('user_id', $userId)
+        $allowedColumns = ['user_id', 'tg_user_id']; // Добавьте другие, если нужно
+        if (!in_array($column, $allowedColumns)) {
+            throw new \InvalidArgumentException("Недопустимая колонка: {$column}");
+        }
+
+        MyWord::where($column, $userId)
+            ->where('id', $wordId)
+            ->update([
+                'status' => self::REPEAT,
+                'repeated' => time(),
+            ]);
+
+        return true;
+    }
+
+    public static function getNewWord($userId, string $column = 'user_id')
+    {
+        $allowedColumns = ['user_id', 'tg_user_id']; // Добавьте другие, если нужно
+        if (!in_array($column, $allowedColumns)) {
+            throw new \InvalidArgumentException("Недопустимая колонка: {$column}");
+        }
+
+        $word = self::where($column, $userId)
             ->where('status', self::NEW)
             ->with('word')
             ->first();
@@ -72,13 +104,5 @@ class WordService
             'sentence' => $data->sentence,
             'word_list_id' => $id,
         ]);
-    }
-
-    public static function getNewWordByTgId($tgId)
-    {
-        MyWord::where('tg_user_id', $tgId)
-            ->where('status', 0)
-            ->with('word')
-            ->first();
     }
 }

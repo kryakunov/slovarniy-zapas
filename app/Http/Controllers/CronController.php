@@ -15,6 +15,9 @@ class CronController extends Controller
 
     public function responder()
     {
+        $userId = 375727411;
+        $a = WordService::getRememberWord($userId, 'tg_user_id');
+        dd($a);
         $users = TgUser::where('tg_id', 375727411)->get();
 
         foreach($users as $user) {
