@@ -15,9 +15,10 @@ class CronController extends Controller
 
     public function responder()
     {
-        $users = TgUser::all();
+        $users = TgUser::where('tg_id', 375727411)->get();
 
         foreach($users as $user) {
+
            // $word = WordService::getNewWordByTgId($user->tg_id);
             $word = WordService::getRandomWord();
             $text = "Привет, {$user->tg_name}! Новое слово на сегодня: " . PHP_EOL .PHP_EOL .

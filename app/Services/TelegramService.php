@@ -13,7 +13,12 @@ class TelegramService
     )
     {}
 
-    public function handle($message)
+    public function handleCallback()
+    {
+
+    }
+
+    public function handleMessage($message)
     {
         $chatId = $message['chat']['id'];
         $text = $message['text'] ?? '';
@@ -66,6 +71,7 @@ class TelegramService
         Http::post($botApiUrl, [
             'chat_id' => $chatId,
             'text' => $message,
+            'reply_markup' => json_encode($this->getInlineKeyboard()),
             'parse_mode' => 'HTML'
         ]);
 
@@ -85,9 +91,9 @@ class TelegramService
             )->post($botApiUrl, [
                 'chat_id' => $chatId,
                 'caption' => $message,
+                'reply_markup' => json_encode($this->getReplyKeyboard()),
                 'parse_mode' => 'HTML'
             ]);
-
 
         } catch (\Exception $e) {
             dd($e->getMessage());
@@ -95,6 +101,29 @@ class TelegramService
 
         return true;
     }
+
+    public function getReplyKeyboard(): array
+    {
+        return [
+            'keyboard' => [
+                [['text' => 'Новое слово'], ['text' => 'Повторение']],
+                [['text' => 'Кнопка 3']]
+            ],
+            'resize_keyboard' => true, // Автоматическое изменение размера
+            'one_time_keyboard' => false // Клавиатура остается после нажатия
+        ];
+    }
+
+    public function getInlineKeyboard(): array
+    {
+        return [
+            'inline_keyboard' => [
+                [['text' => 'Больше не присылать', 'callback_data' => 'btn1'], ['text' => 'Кнопка 2', 'callback_data' => 'btn2']],
+                [['text' => 'Кнопка 3', 'callback_data' => 'btn3']]
+            ]
+        ];
+    }
+
 
     public function error(): void
     {

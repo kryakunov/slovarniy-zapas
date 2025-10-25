@@ -12,6 +12,7 @@ use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Route;
 
 // Telegram Bot
+Route::get('/test', [CronController::class, 'responder']);
 Route::post('/bot', TelegramController::class)->withoutMiddleware(['web', 'csrf'])->name('bot');
 Route::get('/set-webhook', [TelegramController::class, 'setWebhook']);
 

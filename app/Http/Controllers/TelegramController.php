@@ -19,11 +19,29 @@ class TelegramController extends Controller
         $update = json_decode($input, true);
 
         // Проверка на пустой запрос (Telegram иногда шлет для теста)
-        if (!$update || !isset($update['update_id']) || !isset($update['message'])) {
+        if (!$update || !isset($update['update_id'])) {
             $this->telegramService->error();
         }
 
-        $this->telegramService->handle($update['message']);
+        if (isset($update['message'])) {
+
+            $this->telegramService->handleMessage($update['message']);
+
+        } elseif (isset($update['callback_query'])) {
+
+            file_put_contents('callback.txt', json_encode($update, JSON_PRETTY_PRINT));
+//
+//            // Обработка нажатия inline-кнопки
+//            $callbackData = $update['callback_query']['data'];
+//            $chatId = $update['callback_query']['message']['chat']['id'];
+//            $messageId = $update['callback_query']['message']['message_id'];
+//            handleCallback($chatId, $callbackData, $messageId);
+
+
+            $this->telegramService->handleCallback($update['message']);
+
+        }
+
     }
 
 
