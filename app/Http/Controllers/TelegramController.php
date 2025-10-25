@@ -29,16 +29,7 @@ class TelegramController extends Controller
 
         } elseif (isset($update['callback_query'])) {
 
-            file_put_contents('callback.txt', json_encode($update, JSON_PRETTY_PRINT));
-//
-//            // Обработка нажатия inline-кнопки
-//            $callbackData = $update['callback_query']['data'];
-//            $chatId = $update['callback_query']['message']['chat']['id'];
-//            $messageId = $update['callback_query']['message']['message_id'];
-//            handleCallback($chatId, $callbackData, $messageId);
-
-
-            $this->telegramService->handleCallback($update['message']);
+            $this->telegramService->handleCallback($update['callback_query']);
 
         }
 

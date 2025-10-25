@@ -13,9 +13,17 @@ class TelegramService
     )
     {}
 
-    public function handleCallback()
+    public function handleCallback($callback)
     {
+        $btn = $callback['callback_query']['data'];
+        $chatId = $callback['callback_query']['message']['chat']['id'];
+        $messageId = $callback['callback_query']['message']['message_id'];
 
+        // Кнопка "больше не присылать слова"
+        if ($btn == 'btn1') {
+            $text = "Слово {$callback['callback_query']['message']} убрано из словаря повторений";
+            $this->sendMessage($chatId, $text);
+        }
     }
 
     public function handleMessage($message)
@@ -33,7 +41,6 @@ class TelegramService
         }
 
         $text = trim($text);
-
 
         try {
 
@@ -55,6 +62,10 @@ class TelegramService
                 }
 
                 $this->sendMessage($chatId, 'Привет, ' . $userName . '! Вы уже используете этого бота');
+            }
+
+            if ($text == 'Новое слово') {
+                $this->sendMessage($chatId, 'Вы запросили новое слово');
             }
 
         } catch (\Exception $e) {
@@ -118,8 +129,7 @@ class TelegramService
     {
         return [
             'inline_keyboard' => [
-                [['text' => 'Больше не присылать', 'callback_data' => 'btn1'], ['text' => 'Кнопка 2', 'callback_data' => 'btn2']],
-                [['text' => 'Кнопка 3', 'callback_data' => 'btn3']]
+                [['text' => 'Выучил, больше не присылать', 'callback_data' => 'btn1']]
             ]
         ];
     }
