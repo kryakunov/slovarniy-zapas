@@ -19,10 +19,12 @@ class TelegramService
         $chatId = $callback['message']['chat']['id'];
         $messageId = $callback['message']['message_id'];
 
+        file_put_contents('call.txt', json_encode($callback, JSON_PRETTY_PRINT));
 
         // Кнопка "больше не присылать слова"
         if ($btn == 'btn1') {
             $text = "Слово {$callback['callback_query']['message']} убрано из словаря повторений";
+            file_put_contents('call2.txt', $text);
             $this->sendMessage($chatId, $text);
         }
     }
