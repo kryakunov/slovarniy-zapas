@@ -8,6 +8,7 @@ use App\Models\TgUsers;
 use App\Models\User;
 use App\Models\WordList;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class TelegramService
 {
@@ -145,18 +146,35 @@ class TelegramService
 
         $text = "<b>{$word['word']}</b> — {$word['description']}";
 
-        $data = [
-            'chat_id' => $chatId,
-            'text' => $text,
-            'parse_mode' => 'HTML',
-            'reply_markup' => [
-                'inline_keyboard' => [
-                    [['text' => '📝 Добавить в список повторения', 'callback_data' => 'add_' . $word['id']]]
-                ],
-            ],
-        ];
+        if ($word['image']) {
+            $fullPath = Storage::disk('public')->path($word['image']);
 
-        Http::post($botApiUrl, $data);
+            // Теперь используйте полный путь
+            Http::attach(
+                'photo',
+                fopen($fullPath, 'r')
+            )->post($botApiUrl, [
+                'chat_id' => $chatId,
+                'caption' => $text,
+                'parse_mode' => 'HTML',
+                'reply_markup' => [
+                    'inline_keyboard' => [
+                        [['text' => '📝 Добавить в список повторения', 'callback_data' => 'add_' . $word['id']]]
+                    ],
+                ],
+            ]);
+        } else {
+            Http::post($botApiUrl, [
+                'chat_id' => $chatId,
+                'text' => $text,
+                'parse_mode' => 'HTML',
+                'reply_markup' => [
+                    'inline_keyboard' => [
+                        [['text' => '📝 Добавить в список повторения', 'callback_data' => 'add_' . $word['id']]]
+                    ],
+                ],
+            ]);
+        }
 
         return true;
     }
