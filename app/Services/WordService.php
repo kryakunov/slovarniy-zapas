@@ -70,6 +70,28 @@ class WordService
             throw new \InvalidArgumentException("Недопустимая колонка: {$column}");
         }
 
+        $word = Word::where('id', $wordId)->firstOrFail();
+
+        MyWord::add([
+            'user_id' => 1,
+            'tg_user_id' => $userId,
+            'word_id' => $wordId,
+            'word_list_id' => $word['word_list_id'],
+            'status' => self::NEW,
+            'repeated' => null,
+            'count_repeated' => null,
+        ]);
+
+        return true;
+    }
+
+    public static function wordRepeated($userId, string $column = 'user_id', $wordId)
+    {
+        $allowedColumns = ['user_id', 'tg_user_id']; // Добавьте другие, если нужно
+        if (!in_array($column, $allowedColumns)) {
+            throw new \InvalidArgumentException("Недопустимая колонка: {$column}");
+        }
+
         MyWord::where($column, $userId)
             ->where('id', $wordId)
             ->update([

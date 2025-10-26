@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Http;
 class TelegramService
 {
     const btn1 =  [['text' => '✅ Выучил, больше не присылать', 'callback_data' => 'done_btn']];
-    const btn2 =   [['text' => '📝 Добавить в список повторения', 'callback_data' => 'btn2']];
+    const btn2 =   [['text' => '📝 Добавить в список повторения', 'callback_data' => 'add_btn']];
 
     public function __construct(
     )
@@ -36,10 +36,15 @@ class TelegramService
 
         } elseif ($btn[0] == 'add') { // Слова добавлено в словарь повторений
 
-          //  WordService::addWordToRepeatList($chatId, 'tg_user_id', $btn[1]);
+            try {
+                WordService::addWordToRepeatList($chatId, 'tg_user_id', $btn[1]);
 
+                $this->sendMessage($chatId, 'Слово добавлено в словарь повторений');
 
-            $this->sendMessage($chatId, 'Слово ' . $btn[1] . ' добавлено в словарь повторений');
+            } catch (\Exception $e) {
+                $this->sendMessage($chatId, 'Произошла ошибка: ' . $e->getMessage());
+            }
+
         }
     }
 
@@ -91,9 +96,8 @@ class TelegramService
 
             // TODO слово с ударением
 
-            $text = "<b>{$word['word']}</b> — {$word['description']}";
 
-            $this->sendMessage($chatId, $text, 'repeat');
+            $this->sendMessageWithNewWord($chatId, $word);
         }
 
         if ($text == '🔁 Повторение') {
@@ -119,12 +123,33 @@ class TelegramService
         ];
 
         if ($keyboard == 'inline') {
-            $data['reply_markup'] = $this->getInlineKeyboard(self::btn2);
+            $data['reply_markup'] = $this->getInlineKeyboard();
         }elseif ($keyboard == 'reply') {
             $data['reply_markup'] = $this->getReplyKeyboard();
-        }elseif ($keyboard == 'repeat') {
-            $data['reply_markup'] = $this->getRepeatKeyboard();
         }
+
+        Http::post($botApiUrl, $data);
+
+        return true;
+    }
+
+    public function sendMessageWithNewWord($chatId, $word): bool
+    {
+        $botToken = env('TELEGRAM_TOKEN');
+        $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
+
+        $text = "<b>{$word['word']}</b> — {$word['description']}";
+
+        $data = [
+            'chat_id' => $chatId,
+            'text' => $text,
+            'parse_mode' => 'HTML',
+            'reply_markup' => [
+                'inline_keyboard' => [
+                    [['text' => '📝 Добавить в список повторения', 'callback_data' => 'add_' . $word['id']]]
+                ],
+            ],
+        ];
 
         Http::post($botApiUrl, $data);
 
@@ -167,7 +192,7 @@ class TelegramService
         ];
     }
 
-    public function getInlineKeyboard(array $buttons): array
+    public function getInlineKeyboard(array $buttons = null): array
     {
         return [
             'inline_keyboard' => [
