@@ -116,7 +116,7 @@ class WordService
             throw new \InvalidArgumentException("Недопустимая колонка: {$column}");
         }
 
-        $word = self::where($column, $userId)
+        $word = MyWord::where($column, $userId)
             ->where('status', self::NEW)
             ->with('word')
             ->first();
