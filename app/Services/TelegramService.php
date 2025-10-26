@@ -37,7 +37,10 @@ class TelegramService
         } elseif ($btn[0] == 'add') { // Слова добавлено в словарь повторений
 
             try {
-                WordService::addWordToRepeatList($chatId, 'tg_user_id', $btn[1]);
+
+                $tgUser = TgUser::where('tg_id', $chatId)->first();
+
+                WordService::addWordToRepeatList($tgUser['id'], 'tg_user_id', $btn[1]);
 
                 $this->sendMessage($chatId, 'Слово добавлено в словарь повторений');
 
