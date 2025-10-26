@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\TgUser;
+use App\Models\WordList;
 use App\Services\TelegramService;
 use App\Services\WordService;
+use Illuminate\Support\Facades\Http;
 
 class CronController extends Controller
 {
@@ -15,23 +17,14 @@ class CronController extends Controller
 
     public function responder()
     {
-        $userId = 375727411;
-        $a = WordService::getRememberWord($userId, 'tg_user_id');
-        dd($a);
-        $users = TgUser::where('tg_id', 375727411)->get();
+        $users = TgUser::all();
 
         foreach($users as $user) {
 
-           // $word = WordService::getNewWordByTgId($user->tg_id);
-            $word = WordService::getRandomWord();
-            $text = "Привет, {$user->tg_name}! Новое слово на сегодня: " . PHP_EOL .PHP_EOL .
-                    "<b>{$word['word']}</b> — {$word['description']}";
+            $text = "Доброе утро, {$user->tg_name}! ☀️  ". PHP_EOL .PHP_EOL ."Новый день — новое слово. Нажми на кнопку «Новое слово» чтобы получить его.";
 
-            if($word['image']) {
-                $this->telegramService->sendPhoto($user->chat_id, $text, $word['image']);
-            } else {
-                $this->telegramService->sendMessage($user->chat_id, $text);
-            }
+            $this->telegramService->sendMessage($user->chat_id, $text);
+
         }
 
     }
