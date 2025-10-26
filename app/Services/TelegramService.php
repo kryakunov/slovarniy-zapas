@@ -40,9 +40,11 @@ class TelegramService
 
                 $tgUser = TgUser::where('tg_id', $chatId)->first();
 
-                WordService::addWordToRepeatList($tgUser['id'], 'tg_user_id', $btn[1]);
-
-                $this->sendMessage($chatId, 'Слово добавлено в словарь повторений');
+                if (WordService::addWordToRepeatList($tgUser['id'], 'tg_user_id', $btn[1])) {
+                    $this->sendMessage($chatId, 'Слово добавлено в словарь повторений');
+                } else {
+                    $this->sendMessage($chatId, 'Слово уже есть в словаре');
+                }
 
             } catch (\Exception $e) {
                 $this->sendMessage($chatId, 'Произошла ошибка: ' . $e->getMessage());

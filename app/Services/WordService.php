@@ -63,7 +63,7 @@ class WordService
         return $word;
     }
 
-    public static function addWordToRepeatList($userId, string $column = 'user_id', $wordId)
+    public static function addWordToRepeatList($userId, string $column = 'user_id', $wordId): bool
     {
         $allowedColumns = ['user_id', 'tg_user_id']; // Добавьте другие, если нужно
         if (!in_array($column, $allowedColumns)) {
@@ -72,17 +72,24 @@ class WordService
 
         $word = Word::where('id', $wordId)->firstOrFail();
 
-        MyWord::create([
+        $word = MyWord::firstOrCreate(
+            [
+            'word_id' => $wordId
+            ],
+            [
             'user_id' => 1,
             'tg_user_id' => $userId,
-            'word_id' => $wordId,
             'word_list_id' => $word['word_list_id'],
             'status' => self::NEW,
             'repeated' => null,
             'count_repeated' => null,
         ]);
 
-        return true;
+        if ($word->wasRecentlyCreated) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static function wordRepeated($userId, string $column = 'user_id', $wordId)
