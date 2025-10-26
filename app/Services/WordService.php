@@ -72,7 +72,7 @@ class WordService
 
         $word = Word::where('id', $wordId)->firstOrFail();
 
-        MyWord::add([
+        MyWord::create([
             'user_id' => 1,
             'tg_user_id' => $userId,
             'word_id' => $wordId,
