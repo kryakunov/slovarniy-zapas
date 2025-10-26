@@ -23,7 +23,7 @@ class CronController extends Controller
 
             $text = "Доброе утро, {$user->tg_name}! ☀️  ". PHP_EOL .PHP_EOL ."Новый день — новое слово. Нажми на кнопку «Новое слово» чтобы получить его.";
 
-            $this->telegramService->sendMessage($user->chat_id, $text);
+            $this->telegramService->sendMessage($user->chat_id, $text, 'reply');
 
         }
 
