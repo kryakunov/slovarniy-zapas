@@ -16,10 +16,12 @@ class TelegramService
 {
     const btn1 =  [['text' => '✅ Выучил, больше не присылать', 'callback_data' => 'done_btn']];
     const btn2 =   [['text' => '📝 Добавить в список повторения', 'callback_data' => 'add_btn']];
+    public $gigaChatService;
 
-    public function __construct(
-    )
-    {}
+    public function __construct(GigaChatService $gigaChatService)
+    {
+        $this->gigaChatService = $gigaChatService;
+    }
 
     public function handleCallback($callback, $id = 'no')
     {
@@ -144,7 +146,16 @@ class TelegramService
     public function sendMessageWithNewWord($chatId, $word): bool
     {
         $botToken = env('TELEGRAM_TOKEN');
-        $text = "<b>{$word['word']}</b> — {$word['description']}";
+
+        $sentence = '';
+        try {
+            $sentence = $this->gigaChatService->generate($word['word']);
+        }
+        catch (\Exception $e) {
+
+        }
+
+        $text = "<b>{$word['word']}</b> — {$word['description']}" . PHP_EOL . PHP_EOL . "<i>{$sentence}</i>";
 
         if ($word['image']) {
             $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendPhoto";

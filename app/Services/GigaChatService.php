@@ -20,7 +20,9 @@ class GigaChatService
 
     public function generate($word)
     {
-        return $this->textRequest('Придумай предложение со словом ' . $word);
+        $prompt = "Пожалуйста, создай предложение, в котором будет использовано слово \"$word\". Предложение должно быть естественным и красивым.";
+
+        return $this->textRequest($prompt);
     }
 
 

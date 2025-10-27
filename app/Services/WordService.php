@@ -80,7 +80,7 @@ class WordService
             'user_id' => 1,
             'tg_user_id' => $userId,
             'word_list_id' => $word['word_list_id'],
-            'status' => self::NEW,
+            'status' => self::REPEAT,
             'repeated' => null,
             'count_repeated' => null,
         ]);

@@ -9,6 +9,7 @@ use App\Models\Word;
 use App\Models\WordList;
 use App\Services\WordService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -88,8 +89,15 @@ class AdminController extends Controller
 
         // Загрузка изображения
         if ($request->file('image')) {
-            $filename = $word->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $path = $request->file('image')->storeAs('images', $filename, 'public');
+            try {
+                $filename = $word->id . '.' . $request->file('image')->getClientOriginalExtension();
+                $path = $request->file('image')->storeAs('images', $filename, 'public');
+                $word->update([
+                    'image' => $filename,
+                ]);
+            } catch (\Exception $exception) {
+                Log::error($exception->getMessage());
+            }
         }
 
         $currentWordList = $word->word_list_id;
@@ -99,7 +107,6 @@ class AdminController extends Controller
             'stress' => $request->stress ?? $request['word'],
             'description' => $request->description,
             'sentence' => $request->sentence ?? null,
-            'image' => $filename ?? null,
             'word_list_id' => $request->word_list ?? null,
             'hide_image' => $request->hide_image ?? 0,
         ]);
