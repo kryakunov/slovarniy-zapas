@@ -108,7 +108,7 @@ class TelegramService
             $this->sendMessageWithNewWord($chatId, $word);
         }
 
-        if ($text == '🔁 Повторение') {
+        if ($text == '🔁Повторение') {
 
             $repeatWords = WordService::getRememberWord($userId, 'tg_user_id');
 
@@ -156,7 +156,7 @@ class TelegramService
             Http::post($botApiUrl, [
                 'chat_id' => $chatId,
                 'photo' => $fullPath,
-                'caption' => 'test',
+                'caption' => $text,
                 'parse_mode' => 'HTML',
                 'reply_markup' => [
                     'inline_keyboard' => [
