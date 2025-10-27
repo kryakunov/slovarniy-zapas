@@ -6,8 +6,10 @@ use App\Models\MyWord;
 use App\Models\TgUser;
 use App\Models\TgUsers;
 use App\Models\User;
+use App\Models\Word;
 use App\Models\WordList;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class TelegramService
@@ -142,20 +144,19 @@ class TelegramService
     public function sendMessageWithNewWord($chatId, $word): bool
     {
         $botToken = env('TELEGRAM_TOKEN');
-        $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
-
         $text = "<b>{$word['word']}</b> — {$word['description']}";
 
         if ($word['image']) {
-            $fullPath = Storage::disk('public')->path($word['image']);
+            $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendPhoto";
 
-            // Теперь используйте полный путь
-            Http::attach(
-                'photo',
-                fopen($fullPath, 'r')
-            )->post($botApiUrl, [
+            $fullPath = Storage::disk('public')->url('/images/'.$word['image']);
+            $fullPath = str_replace('словарныйзапас.рф', 'xn--80aaaf0allsgqghl8k.xn--p1ai', $fullPath);
+            $fullPath = str_replace('http', 'https', $fullPath);
+
+            Http::post($botApiUrl, [
                 'chat_id' => $chatId,
-                'caption' => $text,
+                'photo' => $fullPath,
+                'caption' => 'test',
                 'parse_mode' => 'HTML',
                 'reply_markup' => [
                     'inline_keyboard' => [
@@ -163,7 +164,10 @@ class TelegramService
                     ],
                 ],
             ]);
+
         } else {
+            $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
+
             Http::post($botApiUrl, [
                 'chat_id' => $chatId,
                 'text' => $text,
