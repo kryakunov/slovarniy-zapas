@@ -148,12 +148,12 @@ class TelegramService
         $botToken = env('TELEGRAM_TOKEN');
 
         $sentence = '';
-        try {
-            $sentence = $this->gigaChatService->generate($word['word']);
-        }
-        catch (\Exception $e) {
-
-        }
+//        try {
+//            $sentence = $this->gigaChatService->generate($word['word']);
+//        }
+//        catch (\Exception $e) {
+//
+//        }
 
         $text = "<b>{$word['word']}</b> — {$word['description']}" . PHP_EOL . PHP_EOL . "<i>{$sentence}</i>";
 
