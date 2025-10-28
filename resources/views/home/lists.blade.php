@@ -21,6 +21,12 @@
                         </a>
                     @endif
 
+                    @php
+                        if ($list['image'] == null) {
+                            $list['image'] = '/no-image.png';
+                            }
+                    @endphp
+
                     <a href="{{ route('open-word-list', $list['slug']) }}">
                     <img class="mb-5 rounded-t-xl" src="{{ $list['image'] }}" alt="{{ $list['title'] }}">
                     <h2 class="text-sm h-20 font-semibold pl-4 pr-4">{{ $list['title'] }}</h2>

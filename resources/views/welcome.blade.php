@@ -69,74 +69,75 @@
         </div>
 
 
-{{--<div class="bg-gray-800 flex items-center justify-center ">--}}
+<div class="bg-gray-800 flex items-center justify-center ">
 
-{{--        <div class="relative w-100 mt-10 mb-10">--}}
-{{--            <div class="overflow-hidden rounded-lg">--}}
-{{--                <div id="slider" class="flex transition-transform duration-500 text-center items-center">--}}
-{{--                    @foreach($words as $word)--}}
-{{--                        <div class="min-w-full pl-15 pr-15">--}}
-{{--                            <p class="text-3xl mb-1 text-gray-200">{{ $word['word'] }}</p>--}}
-{{--                            <p class="text-sm text-gray-200">{{ $word['description'] }}</p>--}}
-{{--                        </div>--}}
-{{--                    @endforeach--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <button id="prev" class="text-4xl text-white absolute top-1/2 left-0 transform -translate-y-1/2 cursor-pointer p-2 rounded-full ">❮</button>--}}
-{{--            <button id="next" class="text-4xl text-white absolute top-1/2 right-0 transform -translate-y-1/2 cursor-pointer p-2 rounded-full ">❯</button>--}}
+        <div class="relative w-100 mt-10 mb-10">
+            <div class="overflow-hidden rounded-lg">
+                <div id="slider" class="flex transition-transform duration-500 text-center items-center">
+                    @foreach($words as $word)
+                        <div class="min-w-full pl-15 pr-15">
+                            <p class="text-3xl mb-1 text-gray-200">{{ $word['word'] }}</p>
+                            <p class="text-sm text-gray-200">{{ $word['description'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <button id="prev" class="text-4xl text-white absolute top-1/2 left-0 transform -translate-y-1/2 cursor-pointer p-2 rounded-full ">❮</button>
+            <button id="next" class="text-4xl text-white absolute top-1/2 right-0 transform -translate-y-1/2 cursor-pointer p-2 rounded-full ">❯</button>
 
-{{--    </div>--}}
-{{--    <script>--}}
-{{--        const slider = document.getElementById('slider');--}}
-{{--        const slides = slider.children;--}}
-{{--        let currentIndex = 0;--}}
+    </div>
+    <script>
+        const slider = document.getElementById('slider');
+        const slides = slider.children;
+        let currentIndex = 0;
 
-{{--        document.getElementById('next').addEventListener('click', () => {--}}
-{{--            currentIndex = (currentIndex + 1) % slides.length;--}}
-{{--            updateSlider();--}}
-{{--        });--}}
+        document.getElementById('next').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlider();
+        });
 
-{{--        document.getElementById('prev').addEventListener('click', () => {--}}
-{{--            currentIndex = (currentIndex - 1 + slides.length) % slides.length;--}}
-{{--            updateSlider();--}}
-{{--        });--}}
+        document.getElementById('prev').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlider();
+        });
 
-{{--        function updateSlider() {--}}
-{{--            const offset = -currentIndex * 100;--}}
-{{--            slider.style.transform = `translateX(${offset}%)`;--}}
-{{--        }--}}
-{{--        // Автоматическая прокрутка слайдов каждые 1 секунду--}}
-{{--        setInterval(() => {--}}
-{{--            currentIndex = (currentIndex + 1) % slides.length;--}}
-{{--            updateSlider();--}}
-{{--        }, 3000);--}}
+        function updateSlider() {
+            const offset = -currentIndex * 100;
+            slider.style.transform = `translateX(${offset}%)`;
+        }
+        // Автоматическая прокрутка слайдов каждые 1 секунду
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlider();
+        }, 3000);
 
 
-{{--        function getData(id)--}}
-{{--        {--}}
-{{--            $.ajax({--}}
-{{--                url: '/get-word-lists/' + id,--}}
-{{--                method: 'GET',--}}
-{{--                dataType: 'json',--}}
-{{--                success: function(data) {--}}
-{{--                    let html = '';--}}
-{{--                    data.forEach(function(item) {--}}
-{{--                        // Предположим, что у каждого объекта есть поле 'name'--}}
-{{--                        html += '<p>' + item.title + '</p>';--}}
-{{--                    });--}}
-{{--                    $('#dataContainer').html('<span>dsfdsf</span>'); // Обновляем содержимое контейнера--}}
+        function getData(id)
+        {
+            $.ajax({
+                url: '/get-word-lists/' + id,
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    let html = '';
+                    data.forEach(function(item) {
+                        // Предположим, что у каждого объекта есть поле 'name'
+                        html += '<p>' + item.title + '</p>';
+                    });
+                    $('#dataContainer').html('<span>dsfdsf</span>'); // Обновляем содержимое контейнера
 
-{{--                },--}}
-{{--                error: function(xhr, status, error) {--}}
-{{--                    console.error('Ошибка при получении данных:', error);--}}
-{{--                }--}}
-{{--            });--}}
-{{--        }--}}
-{{--    </script>--}}
-{{--</div>--}}
-        <div class="bg-gray-200  p-10 text-black flex justify-center items-center ">
-        <div>
-            <p class="main_title">Словари на все случаи жизни</p>
+                },
+                error: function(xhr, status, error) {
+                    console.error('Ошибка при получении данных:', error);
+                }
+            });
+        }
+    </script>
+</div>
+
+<div class="bg-gray-200  p-10 text-black flex justify-center items-center ">
+<div>
+<p class="main_title">Словари на все случаи жизни</p>
 
 {{--    <div class="flex items-center justify-center mb-10 ">--}}
 {{--    <div class="w-[70%] p-6 ">--}}
@@ -150,27 +151,52 @@
 {{--        </div>--}}
 {{--    </div>--}}
 {{--    </div>--}}
-    <div>
-        @include('word-lists')
-    </div>
 
-    <div class="text-center">
-        <a href="{{ route('login') }}">
-        <button type="button" class="main_btn"
-        >
-            Смотреть все словари
-        </button></a>
-    </div>
+<div>
+@include('word-lists')
+</div>
 
 
 
+<div class="text-center">
+<a href="{{ route('login') }}">
+<button type="button" class="main_btn"
+>
+Смотреть все словари
+</button></a>
+</div>
 
+
+
+
+</div>
+</div>
+
+        <div class="main text-white h-screen text-left px-40 bg-[#339dc8] ">
+            <div class="flex items-center justify-between pt-10">
+                <div class="flex items-center">
+                    <div class="mt-20">
+                        <img src="/tgbot.png" width="600"></div>
+                    <div><p class="h2_title">Попробуйте телеграм-бота</p>
+                        <p class="p-4 text-lg">Изучайте новые слова с помощью бота.<br>
+                            Бот сам вам будет напоминать о необходимости повторять слова.
+                        </p>
+                        <a href="https://t.me/szapas_bot" target="_blank">
+                            <button type="button" class="main_btn ml-4"
+                            >
+                                Перейти в бот
+                            </button></a>
+                    </div>
+                </div>
+            </div>
         </div>
-        </div>
-        <div class=" text-white flex justify-center h-34 items-center bg-gray-800" >
+
+
+<div class=" text-white flex justify-center h-34 items-center bg-gray-800" >
 
             <p class="p-4">Группа ВК</p>
             <p class="p-4">Канал</p>
+            <p class="p-4"><a href="https://t.me/szapas_bot" target="_blank">Телеграм-бот</a></p>
         </div>
     </div>
     <script>

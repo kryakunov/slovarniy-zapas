@@ -76,6 +76,12 @@
             <div class="col-span-3">
                 <div class="grid grid-cols-5 gap-6">
                     @forelse($wordLists as $list)
+
+                        @php
+                            if ($list['image'] == null) {
+                                $list['image'] = '/no-image.png';
+                                }
+                        @endphp
                             <div class="bg-white shadow-md border border-gray-100 rounded-xl flex flex-col hover:shadow-xl">
                                 <a onclick="openPopup({{ $list['id'] }})" class="cursor-pointer">
                                     <div id="list{{ $list['id'] }}"  class="absolute bg-red-400 shadow-md  rounded-tl-xl p-2 text-white z-1 hover:bg-red-500">

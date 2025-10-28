@@ -55,6 +55,30 @@ class TelegramService
                 $this->sendMessage($chatId, 'Произошла ошибка: ' . $e->getMessage());
             }
 
+        } elseif ($btn[0] == 'repeat') { // Слова добавлено в словарь повторений
+
+            if ($btn[1] == 'false') {
+                $this->sendMessage($chatId, 'Неверно');
+                return;
+            }
+
+            try {
+                $myWord = MyWord::where('id', $btn[1])->first();
+                $count = $myWord->count_repeated;
+                $myWord->update([
+                    'count_repeated' => $count + 1,
+                    'repeated' => time(),
+                ]);
+
+                $this->sendMessage($chatId, 'Да!');
+
+            } catch (\Exception $e) {
+
+                $this->sendMessage($chatId, 'Произошла ошибка ' . $e->getMessage());
+                Log::error($e->getMessage());
+            }
+
+
         }
     }
 
@@ -112,9 +136,57 @@ class TelegramService
 
         if ($text == '🔁 Повторение') {
 
-            $repeatWords = WordService::getRememberWord($userId, 'tg_user_id');
+            $tgUserId = TgUser::where('tg_id', $chatId)->first()->id;
+            $word = WordService::getRememberWord($tgUserId, 'tg_user_id');
 
-            $this->sendMessage($chatId, 'Вам осталось повторить {$repeatWords} слов', 'inline');
+            $botToken = env('TELEGRAM_TOKEN');
+            if (!isset($word)) {
+                $this->sendMessage($chatId, 'Слова закончились');
+                return;
+            }
+
+            // Рандомные слова для кнпочек
+            $words = Word::select('word', 'id')->inRandomOrder()->take(3)->get()->toArray();
+            $buttons = [];
+            foreach($words as $item) {
+                $buttons[] = [['text' => $item['word'], 'callback_data' => 'repeat_false']];
+            }
+            $buttons[] = [['text' => $word->word->word, 'callback_data' => 'repeat_'.$word->id]];
+
+            shuffle($buttons);
+            $text = "<i>{$word->word->description}</i> " . PHP_EOL . PHP_EOL . " — Что это за слово? 🤔". PHP_EOL . PHP_EOL;
+
+            if ($word->word->image) {
+                $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendPhoto";
+
+                $fullPath = Storage::disk('public')->url('/images/'.$word->word->image);
+                $fullPath = str_replace('словарныйзапас.рф', 'xn--80aaaf0allsgqghl8k.xn--p1ai', $fullPath);
+                $fullPath = str_replace('http', 'https', $fullPath);
+
+                Http::post($botApiUrl, [
+                    'chat_id' => $chatId,
+                    'photo' => $fullPath,
+                    'caption' => $text,
+                    'parse_mode' => 'HTML',
+                    'reply_markup' => [
+                        'inline_keyboard' => $buttons
+                    ],
+                ]);
+
+            } else {
+                $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
+
+                Http::post($botApiUrl, [
+                    'chat_id' => $chatId,
+                    'text' => $text,
+                    'parse_mode' => 'HTML',
+                    'reply_markup' => [
+                        'inline_keyboard' => $buttons
+                    ],
+                ]);
+            }
+
+            return true;
         }
 
 
