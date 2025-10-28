@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\Button;
 use App\Models\MyWord;
 use App\Models\TgUser;
 use App\Models\TgUsers;
@@ -14,38 +15,43 @@ use Illuminate\Support\Facades\Storage;
 
 class TelegramService
 {
-    const btn1 =  [['text' => '✅ Выучил, больше не присылать', 'callback_data' => 'done_btn']];
-    const btn2 =   [['text' => '📝 Добавить в список повторения', 'callback_data' => 'add_btn']];
     public $gigaChatService;
+    public $botToken;
 
     public function __construct(GigaChatService $gigaChatService)
     {
+        $this->botToken = env('TELEGRAM_TOKEN');
         $this->gigaChatService = $gigaChatService;
     }
 
     public function handleCallback($callback, $id = 'no')
     {
-
         $btn = $callback['data'];
         $chatId = $callback['message']['chat']['id'];
 
         $btn = explode('_', $btn);
 
-        // Кнопка "больше не присылать слова"
+        // Кнопка "больше не присылать слово". Удаляем его из словаря повторений
         if ($btn[0] == 'delete') {
-            $text = "Слово убрано из словаря повторений";
-
-            // TODO убрать из словаря
-
-            $this->sendMessage($chatId, $text);
-
-        } elseif ($btn[0] == 'add') { // Слова добавлено в словарь повторений
 
             try {
+                $tgUser = TgUser::where('tg_id', $chatId)->first()->id;
+                MyWord::where([
+                    'tg_user_id' => $tgUser->id,
+                    'id' => $btn[1],
+                ])->delete();
+            } catch (\Throwable $th) {
+                Log::error($th->getMessage());
+            }
 
-                $tgUser = TgUser::where('tg_id', $chatId)->first();
+            $this->sendMessage($chatId, 'Слово убрано из словаря повторений');
 
-                if (WordService::addWordToRepeatList($tgUser['id'], 'tg_user_id', $btn[1])) {
+        } elseif ($btn[0] == 'add') { // Добавить слово в словарь повторений
+
+            try {
+                $tgUser = TgUser::where('tg_id', $chatId)->first()->id;
+
+                if (WordService::addWordToRepeatList($tgUser, 'tg_user_id', $btn[1])) {
                     $this->sendMessage($chatId, 'Слово добавлено в словарь повторений');
                 } else {
                     $this->sendMessage($chatId, 'Слово уже есть в словаре');
@@ -55,10 +61,12 @@ class TelegramService
                 $this->sendMessage($chatId, 'Произошла ошибка: ' . $e->getMessage());
             }
 
-        } elseif ($btn[0] == 'repeat') { // Слова добавлено в словарь повторений
+        } elseif ($btn[0] == 'repeat') { // Проверить слово
 
             if ($btn[1] == 'false') {
                 $this->sendMessage($chatId, 'Неверно');
+
+                // TODO получить id сообщения и удалить. А слово пометить как незачет
                 return;
             }
 
@@ -73,12 +81,9 @@ class TelegramService
                 $this->sendMessage($chatId, 'Да!');
 
             } catch (\Exception $e) {
-
-                $this->sendMessage($chatId, 'Произошла ошибка ' . $e->getMessage());
                 Log::error($e->getMessage());
+                $this->sendMessage($chatId, 'Произошла ошибка ' . $e->getMessage());
             }
-
-
         }
     }
 
@@ -124,7 +129,7 @@ class TelegramService
 
         if ($text == '✨ Новое слово') {
 
-           // $word = WordService::getNewWord($userId);
+            // $word = WordService::getNewWord($userId);
 
             $word = WordService::getRandomWord();
 
@@ -188,15 +193,11 @@ class TelegramService
 
             return true;
         }
-
-
-
     }
 
-    public function sendMessage($chatId, $message, $keyboard = false): bool
+    public function sendMessage($chatId, $message, $keyboard = false, $buttons = null): bool
     {
-        $botToken = env('TELEGRAM_TOKEN');
-        $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
+        $botApiUrl = "https://api.telegram.org/bot{$this->botToken}/sendMessage";
 
         $data = [
             'chat_id' => $chatId,
@@ -205,8 +206,15 @@ class TelegramService
         ];
 
         if ($keyboard == 'inline') {
-            $data['reply_markup'] = $this->getInlineKeyboard();
-        }elseif ($keyboard == 'reply') {
+            if (!$buttons) {
+                return false;
+            }
+
+            $data['reply_markup'] = [
+                'inline_keyboard' =>  $buttons
+            ];
+
+        } elseif ($keyboard == 'reply') {
             $data['reply_markup'] = $this->getReplyKeyboard();
         }
 
@@ -217,74 +225,67 @@ class TelegramService
 
     public function sendMessageWithNewWord($chatId, $word): bool
     {
-        $botToken = env('TELEGRAM_TOKEN');
+        $text = "<b>{$word['word']}</b> — {$word['description']}" . PHP_EOL . PHP_EOL . "<i>{$word['sentence']}</i>";
 
-        $sentence = '';
-//        try {
-//            $sentence = $this->gigaChatService->generate($word['word']);
-//        }
-//        catch (\Exception $e) {
-//
-//        }
-
-        $text = "<b>{$word['word']}</b> — {$word['description']}" . PHP_EOL . PHP_EOL . "<i>{$sentence}</i>";
+        $btn = [['text' => Button::AddToRepeatList->value, 'callback_data' => 'add_' . $word['id']]];
 
         if ($word['image']) {
-            $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendPhoto";
 
             $fullPath = Storage::disk('public')->url('/images/'.$word['image']);
             $fullPath = str_replace('словарныйзапас.рф', 'xn--80aaaf0allsgqghl8k.xn--p1ai', $fullPath);
             $fullPath = str_replace('http', 'https', $fullPath);
 
-            Http::post($botApiUrl, [
-                'chat_id' => $chatId,
-                'photo' => $fullPath,
-                'caption' => $text,
-                'parse_mode' => 'HTML',
-                'reply_markup' => [
-                    'inline_keyboard' => [
-                        [['text' => '📝 Добавить в список повторения', 'callback_data' => 'add_' . $word['id']]]
-                    ],
-                ],
-            ]);
+            $this->sendPhoto(
+                chatId: $chatId,
+                message: $text,
+                photoUrl: $fullPath,
+                keyboard: 'inline',
+                buttons: $btn
+            );
 
         } else {
-            $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
 
-            Http::post($botApiUrl, [
-                'chat_id' => $chatId,
-                'text' => $text,
-                'parse_mode' => 'HTML',
-                'reply_markup' => [
-                    'inline_keyboard' => [
-                        [['text' => '📝 Добавить в список повторения', 'callback_data' => 'add_' . $word['id']]]
-                    ],
-                ],
-            ]);
+            $this->sendMessage(
+                chatId: $chatId,
+                message: $text,
+                keyboard: 'inline',
+                buttons: $btn
+            );
         }
 
         return true;
     }
 
-    public function sendPhoto($chatId, $message, $image): bool
+    public function sendPhoto($chatId, $message, $photoUrl, $keyboard = 'reply', $buttons = null): bool
     {
-        $botToken = env('TELEGRAM_TOKEN');
-        $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendPhoto";
+        $botApiUrl = "https://api.telegram.org/bot{$this->botToken}/sendPhoto";
+
+        $data = [
+            'chat_id' => $chatId,
+            'photo' => $photoUrl,
+            'caption' => $message,
+            'parse_mode' => 'HTML',
+        ];
+
+        if ($keyboard == 'inline') {
+            if (!$buttons) {
+                return false;
+            }
+
+            $data['reply_markup'] = [
+                'inline_keyboard' =>  $buttons
+            ];
+
+        } elseif ($keyboard == 'reply') {
+            $data['reply_markup'] = $this->getReplyKeyboard();
+        }
 
         try {
 
-            $response = Http::attach(
-                'photo',
-                fopen($image, 'r')
-            )->post($botApiUrl, [
-                'chat_id' => $chatId,
-                'caption' => $message,
-                'reply_markup' => json_encode($this->getReplyKeyboard()),
-                'parse_mode' => 'HTML'
-            ]);
+            Http::post($botApiUrl, $data);
 
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            Log::error($e->getMessage());
         }
 
         return true;
@@ -299,15 +300,6 @@ class TelegramService
             ],
             'resize_keyboard' => true, // Автоматическое изменение размера
             'one_time_keyboard' => false // Клавиатура остается после нажатия
-        ];
-    }
-
-    public function getInlineKeyboard(array $buttons = null): array
-    {
-        return [
-            'inline_keyboard' => [
-               $buttons
-            ]
         ];
     }
 
