@@ -175,9 +175,9 @@
         <div class="main text-white h-screen text-left px-40 bg-[#339dc8] ">
             <div class="flex items-center justify-between pt-10">
                 <div class="flex items-center">
-                    <div class="mt-20">
-                        <img src="/tgbot.png" width="600"></div>
-                    <div><p class="h2_title">Попробуйте телеграм-бота</p>
+                    <div class="m-20">
+                        <img src="/tgbot.png" width="500"></div>
+                    <div><p class="h2_title">Попробуйте <br>телеграм-бота</p>
                         <p class="p-4 text-lg">Изучайте новые слова с помощью бота.<br>
                             Бот сам вам будет напоминать о необходимости повторять слова.
                         </p>
