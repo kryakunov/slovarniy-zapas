@@ -175,7 +175,7 @@
         <div class="main text-white h-screen text-left px-40 bg-[#339dc8] ">
             <div class="flex items-center justify-between pt-10">
                 <div class="flex items-center">
-                    <div class="m-20">
+                    <div class="lg:m-20">
                         <img src="/tgbot.png" width="500"></div>
                     <div><p class="h2_title">Попробуйте <br>телеграм-бота</p>
                         <p class="p-4 text-lg">Изучайте новые слова с помощью бота.<br>
