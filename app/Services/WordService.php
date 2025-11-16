@@ -22,7 +22,7 @@ class WordService
 
     public static function getRandomWord()
     {
-        return Word::inRandomOrder()->first();
+        return Word::where('is_active', 1)->inRandomOrder()->first();
     }
 
     public static function getRepeatWords($userId, string $column = 'user_id')
