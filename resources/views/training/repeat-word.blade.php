@@ -2,6 +2,7 @@
 
 @section('content')
 
+        <div id="image" class="image-container"></div>
         <div id="wordDescription" class="mt-20 text-sky-600 font-semibold text-xl">...</div>
 
 
@@ -70,6 +71,7 @@
         showNewWord();
     }, 1000);
 
+    let image = '';
     let word = '';
     let description = '';
     let wordId = 0;
@@ -87,6 +89,21 @@
         if (wordContainer.classList.contains('non-clickable')) {
             wordContainer.classList.remove('non-clickable');
         }
+
+        let imageUrl = '';
+
+        if (image === null) {
+            imageUrl = '/no-image.png';
+        } else {
+            imageUrl = "{{ asset('storage/images') }}/" + image;
+        }
+
+        const container = document.getElementById('image');
+        const img = document.createElement('img');
+        container.innerHTML = '';
+        img.src = imageUrl;
+        img.alt = word;
+        container.appendChild(img);
 
         const wordCheckResultError = document.getElementById('wordCheckResultError');
         const wordCheckResultSuccess = document.getElementById('wordCheckResultSuccess');
@@ -136,6 +153,7 @@
             .then(data => {
                 if(data.status == 'success') {
                     word = data.word;
+                    image = data.image;
                     description = data.description
                     wordId = data.word_id
                     words = data.words

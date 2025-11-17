@@ -294,6 +294,9 @@ class TrainingController extends Controller
             ]);
         }
 
+        $image = $res['word']['image'];
+
+
         $wordId = $res['word']['id'];
         $word = $res['word']['stress'] ? $res['word']['stress'] : $res['word']['word'] ;
         $description = $res['word']['description'];
@@ -304,6 +307,7 @@ class TrainingController extends Controller
 
         return response()->json([
             'status' => 'success',
+            'image' => $image,
             'word' => $word,
             'words' => $words,
             'word_id' => $wordId,
