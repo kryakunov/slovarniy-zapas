@@ -28,6 +28,7 @@ class WordStoreRequest extends FormRequest
             'stress' => '',
             'description' => 'required|string',
             'sentence' => '',
+            'lang' => '',
         ];
     }
 

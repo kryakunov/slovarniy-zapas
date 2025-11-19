@@ -28,6 +28,9 @@
                 Пример предложения со словом
                 <textarea name="sentence" rows=5 class="bg-white w-100 p-4 border border-gray-100 rounded"></textarea>
             </div>
+            <div class="m-3 w-100">
+                <input type="checkbox" name="lang" value="en"> Английское</input>
+            </div>
 
             <div class="m-3 w-200">
                 <input type="file"  class="items-center bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded cursor-pointer" name="image">

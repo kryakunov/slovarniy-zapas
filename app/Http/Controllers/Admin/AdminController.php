@@ -103,6 +103,7 @@ class AdminController extends Controller
         $currentWordList = $word->word_list_id;
 
         $word->update([
+            'is_active' => $request->is_active ?? 0,
             'word' => $request->word,
             'stress' => $request->stress ?? $request['word'],
             'description' => $request->description,

@@ -17,6 +17,7 @@
         <table class="table-auto w-300">
             <thead>
             <tr>
+                <th class="text-left p-2 bg-gray-100">Активно</th>
                 <th class="text-left p-2 bg-gray-100">Слово</th>
                 <th class="text-left p-2 bg-gray-100">Ударение</th>
                 <th class="text-left p-2 bg-gray-100">Изображение</th>
@@ -29,6 +30,7 @@
             <tbody>
             @foreach($words as $word)
             <tr>
+                <td class="p-2 text-sm font-semibold text-sky-800">{{ $word['is_active'] }}</td>
                 <td class="p-2 text-sm font-semibold text-sky-800">{{ $word['word'] }}</td>
                 <td class="p-2 text-sm">{{ $word['stress'] ? '' : 'no' }}</td>
                 <td class="p-2 text-sm">{{ $word['image'] ? '' : 'no' }}</td>

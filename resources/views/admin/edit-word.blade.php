@@ -19,6 +19,9 @@
             @method('PUT')
 
             <div class="border-b border-b-gray-300">
+                <div class="m-3">
+                    <input type="checkbox" {{ $word['is_active'] ? 'checked' : '' }} name="is_active" value="1" id="is_active"> <label for="is_active">Активно?</label>
+                </div>
                 <div class="m-3 w-100">
                     Слово:
                     <input type="text" name="word" value="{{ $word['word'] }}" class="bg-white w-100 p-4 border border-gray-100 rounded">

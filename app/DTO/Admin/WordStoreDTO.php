@@ -12,6 +12,7 @@ class WordStoreDTO
         public readonly string|null $stress,
         public readonly string $description,
         public readonly string $sentence,
+        public readonly string|null $lang,
     )
     {
     }
@@ -23,6 +24,7 @@ class WordStoreDTO
             stress: $data['stress'] ?? null,
             description: $data['description'],
             sentence: $data['sentence'],
+            lang: $data['lang'] ?? 'ru',
         );
     }
 }
