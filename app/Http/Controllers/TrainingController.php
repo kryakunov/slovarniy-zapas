@@ -296,12 +296,12 @@ class TrainingController extends Controller
 
         $image = $res['word']['image'];
 
-
         $wordId = $res['word']['id'];
+        $lang = $res['word']['lang'];
         $word = $res['word']['stress'] ? $res['word']['stress'] : $res['word']['word'] ;
         $description = $res['word']['description'];
 
-        $words = Word::select('word')->inRandomOrder()->take(3)->get()->toArray();
+        $words = Word::select('word')->where('lang', $lang)->inRandomOrder()->take(3)->get()->toArray();
         $words[] = ['word' => $word];
         shuffle($words);
 
