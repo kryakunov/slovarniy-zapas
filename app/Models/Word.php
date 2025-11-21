@@ -9,4 +9,9 @@ class Word extends Model
 {
     protected $guarded = false;
     use HasFactory;
+
+    public function wordList()
+    {
+        return $this->belongsTo(WordList::class);
+    }
 }

@@ -24,6 +24,9 @@
                 <textarea name="description" rows=5 class="bg-white w-100 p-4 border border-gray-100 rounded">{{ $wordList['description'] }}</textarea>
             </div>
             <div class="m-3 w-100">
+                <input type="checkbox" {{ $wordList['is_active'] ? 'checked' : '' }} name="is_active" value="1" id="is_active"> <label for="is_active">Активно?</label>
+            </div>
+            <div class="m-3 w-100">
                 <input type="submit" value="Сохранить" class="items-center bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
             </div>
         </form>

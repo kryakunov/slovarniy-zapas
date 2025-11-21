@@ -59,6 +59,12 @@ class AdminController extends Controller
 
     public function updateWordList($id, Request $request)
     {
+        if (!$request->has('is_active')) {
+            $request = $request->merge([
+                'is_active' => 0,
+            ]);
+        }
+
         WordList::find($id)->update($request->all());
 
         $wordLists = WordList::all();
