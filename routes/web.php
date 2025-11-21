@@ -76,5 +76,7 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
     Route::put('/edit-word/{id}', [AdminController::class, 'updateWord']);//->name('admin.edit-word');
     Route::get('/delete-word/{id}', [AdminController::class, 'deleteWord'])->name('admin.delete-word');
     Route::get('/add-word/{id}', [AdminController::class, 'addWord'])->name('admin.add-word');
+    Route::get('/add-more-words/{id}', [AdminController::class, 'addMoreWords'])->name('admin.add-more-words');
     Route::post('/add-word/{id}', [AdminController::class, 'saveWord']);//->name('admin.add-word');
+    Route::post('/add-more-words/{id}', [AdminController::class, 'saveMoreWords']);//->name('admin.add-word');
 });

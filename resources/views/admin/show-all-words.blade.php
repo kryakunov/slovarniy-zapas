@@ -13,6 +13,9 @@
         <div class="m-3 mb-5 w-100">
             <a href="{{ route('admin.add-word', $wordList['id']) }}" class="items-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded cursor-pointer">Добавить слово</a>
         </div>
+        <div class="m-3 mb-5 w-100">
+            <a href="{{ route('admin.add-more-words', $wordList['id']) }}" class="items-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded cursor-pointer">Добавить слова</a>
+        </div>
 
         <table class="table-auto w-300">
             <thead>

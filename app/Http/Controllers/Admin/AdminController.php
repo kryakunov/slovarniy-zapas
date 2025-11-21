@@ -137,11 +137,57 @@ class AdminController extends Controller
         return view('admin.add-word', compact('id'));
     }
 
+    public function addMoreWords($id)
+    {
+        return view('admin.add-more-words', compact('id'));
+    }
+
     public function saveWord(WordStoreRequest $request, $id)
     {
         $wordDTO = $request->toDTO();
 
         $this->wordService->register($wordDTO, $id);
+
+        $count = Word::where('word_list_id', $id)->count();
+        $wordList = WordList::where('id', $id)->first();
+        $wordList->update(['count' => $count]);
+
+        return redirect()->route('admin.edit-words', $id);
+    }
+
+    public function saveMoreWords(Request $request, $id)
+    {
+
+        $data = $request->data;
+
+        $lines = explode("\r\n", $data);
+
+        $result = [];
+
+        foreach ($lines as $line) {
+            // Удаляем лишние пробелы
+            $line = trim($line);
+            if ($line == '') continue; // пропускаем пустые строки
+
+            // Разбиваем по разделителю " - "
+            $parts = explode('-', $line, 2);
+
+            if (count($parts) == 2) {
+                $word = trim($parts[0]);
+                $description = trim($parts[1]);
+                $result[$word] = $description;
+            }
+        }
+
+
+        foreach($result as $word => $description) {
+            Word::create([
+                'word' => $word,
+                'stress' => $word,
+                'description' => $description,
+                'word_list_id' => $id,
+            ]);
+        }
 
         $count = Word::where('word_list_id', $id)->count();
         $wordList = WordList::where('id', $id)->first();
