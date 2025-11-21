@@ -10,7 +10,7 @@ class MainController extends Controller
 {
     public function index()
     {
-        $wordLists = WordList::take(6)->get();
+        $wordLists = WordList::all();
         $words = Word::all();
         $categories = Category::all();
 
