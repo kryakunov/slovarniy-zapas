@@ -30,6 +30,17 @@ class WordService
             ->first();
     }
 
+    public static function getRandomWordWithImage()
+    {
+        return Word::where('is_active', 1)
+            ->whereNotNull('image')
+            ->whereHas('wordList', function ($query) {
+                $query->where('is_active', 1);
+            })
+            ->inRandomOrder()
+            ->first();
+    }
+
     public static function getRepeatWords($userId, string $column = 'user_id')
     {
         $allowedColumns = ['user_id', 'tg_user_id']; // Добавьте другие, если нужно

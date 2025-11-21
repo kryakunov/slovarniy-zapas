@@ -126,7 +126,7 @@ class TelegramService
 
            // $word = WordService::getNewWord($userId);
 
-            $word = WordService::getRandomWord();
+            $word = WordService::getRandomWordWithImage();
 
             // TODO слово с ударением
 
