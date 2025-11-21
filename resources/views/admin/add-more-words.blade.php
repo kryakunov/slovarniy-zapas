@@ -14,6 +14,10 @@
             @csrf
 
             <div class="m-3 w-100">
+                <input type="checkbox" name="lang" value="en"> Английские слова?</input>
+            </div>
+
+            <div class="m-3 w-100">
                 Слово - описание
                 <textarea name="data" rows=5 class="bg-white w-100 p-4 border border-gray-100 rounded"></textarea>
             </div>

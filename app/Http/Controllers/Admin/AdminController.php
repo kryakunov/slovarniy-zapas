@@ -158,6 +158,12 @@ class AdminController extends Controller
     public function saveMoreWords(Request $request, $id)
     {
 
+        if (!$request->has('lang')) {
+            $request = $request->merge([
+                'lang' => 'ru',
+            ]);
+        }
+
         $data = $request->data;
 
         $lines = explode("\r\n", $data);
@@ -186,6 +192,7 @@ class AdminController extends Controller
                 'stress' => $word,
                 'description' => $description,
                 'word_list_id' => $id,
+                'lang' => $request->lang,
             ]);
         }
 
